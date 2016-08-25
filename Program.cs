@@ -3,16 +3,72 @@ using System.Collections.Generic;
 
 namespace ConsoleApplication
 {
-
     public class Program
     {
         public static void Main(string[] args)
         {   
-            var p = new int[]{0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
-            Console.WriteLine (BottomUpCutRod(p, 3));
+            var p = new int[] {4, 2, 2};
+            Console.WriteLine (MinAvgTwoSlice(p));
         }
 
+        static int MinAvgTwoSlice (int[] A)
+        {
+            int len = A.Length;
+            double[] avlist = new double[len];
+            double av = Convert.ToDouble (Int32.MaxValue);
+
+            // prefix sum calculation.
+            int[] pref = new int[len+ 1];
+
+            for (int i = 1; i < pref.Length; i++)
+            {                
+                pref[i] = pref[i -1] + A[i - 1];
+                
+                for (int j = i - 2; j < i - 1; j++)
+                {
+                    double tmpAv = (pref[i] - pref[j]) * 1.0 / (i - j);
+                    if (tmpAv < av)
+                    {
+                        avlist[j] = tmpAv; 
+                        av = tmpAv;                 
+                    }
+                }
+            }
+
+            for (int i = 0; i < len; i++)
+            {
+                if (av == avlist[i])
+                    return i;
+            }
+
+            return -1;
+        }
+        
         #region CutRod exercise (Dynamic programming)
+
+        static int CutRodWithPricePerCut (int[] A, int N, int P)
+        {
+            int[] r = new int[N + 1];
+            int[] s = new int[N + 1];
+
+            for (int j = 1; j <= N; j++)
+            {
+                int q = Int32.MinValue;
+
+                for (int i = 1; i <= j; i++)
+                {
+                    if (q < A[i] + r[j - i] - ((i -1) * P)) 
+                    {
+                        q = A[i] + r[j - i] - ((i -1) * P);
+                        s[j] = i;
+                    }                                  
+                }
+
+                r[j] = q;                         
+            }    
+
+            return r[N];        
+        }
 
         static int BottomUpCutRod (int[] A, int N)
         {
@@ -86,11 +142,6 @@ namespace ConsoleApplication
         }
 
         #endregion
-
-        static int MinAvgTwoSlice (int[] A)
-        {
-            return 0;
-        }
     }
 }
 

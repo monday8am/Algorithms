@@ -7,8 +7,47 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {4, 3, -1, 2, -2, 10};
-            Console.WriteLine (Sum3(p, 0));
+            var p = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 3, 12};
+            //Console.WriteLine (Sum3(p, 0));
+            var arr = MoveZeroes (p);
+            foreach (var item in arr)
+            {
+                Console.WriteLine (item);
+            }
+        }
+
+        // https://leetcode.com/problems/move-zeroes/
+        static int[] MoveZeroes(int[] nums)
+        {   
+            int firstZero = -1;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == 0)
+                {
+                    if (firstZero == -1)
+                        firstZero = i;
+                }
+                else 
+                {
+                    if (firstZero != -1)
+                    {
+                        nums[firstZero] = nums[i];
+                        nums[i] = 0;
+                        firstZero ++;                        
+                    }
+                }
+            }
+
+            return nums;
+        }
+
+        // https://leetcode.com/problems/reverse-string/
+        static string ReverseString(string s)
+        {            
+            char[] arr = s.ToCharArray ();
+            Array.Reverse (arr);            
+            return string.Join<Char> ("", arr);
         }
 
         static bool Sum3 (int[] A, int s)

@@ -7,8 +7,36 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {4, 2, 2};
-            Console.WriteLine (MinAvgTwoSlice(p));
+            var p = new int[] {4, 3, -1, 2, -2, 10};
+            Console.WriteLine (Sum2(p, 0));
+        }
+
+        
+
+        // http://blog.gainlo.co/index.php/2016/07/19/3sum/
+        static bool Sum2 (int[] A, int s)
+        {
+            Array.Sort (A);
+            int startIndex = 0;
+            int endIndex = A.Length - 1;
+            int sum = 0;
+
+            for (int i = 0; i < A.Length; i++)
+            {
+                sum = A[endIndex] + A[startIndex];
+
+                if (sum > s)
+                    endIndex--;
+                 else if (sum < s)
+                    startIndex++;
+                 else 
+                    return true;      
+
+                if (endIndex == startIndex)
+                    return false;
+            }
+
+            return false;
         }
 
         static int MinAvgTwoSlice (int[] A)

@@ -8,10 +8,34 @@ namespace ConsoleApplication
         public static void Main(string[] args)
         {   
             var p = new int[] {4, 3, -1, 2, -2, 10};
-            Console.WriteLine (Sum2(p, 0));
+            Console.WriteLine (Sum3(p, 0));
         }
 
-        
+        static bool Sum3 (int[] A, int s)
+        {
+            Array.Sort (A);
+            int sum = 0;
+
+            for (int i = 0; i < A.Length - 2; i++)
+            {
+                int startIndex = i + 1;
+                int endIndex = A.Length - 1;
+
+                while (endIndex != startIndex)
+                {
+                    sum = A[i] + A[endIndex] + A[startIndex];
+
+                    if (sum > s)
+                        endIndex--;
+                    else if (sum < s)
+                        startIndex++;
+                    else 
+                        return true;                      
+                }
+            }
+
+            return false;           
+        }
 
         // http://blog.gainlo.co/index.php/2016/07/19/3sum/
         static bool Sum2 (int[] A, int s)
@@ -21,19 +45,17 @@ namespace ConsoleApplication
             int endIndex = A.Length - 1;
             int sum = 0;
 
-            for (int i = 0; i < A.Length; i++)
+            while (endIndex != startIndex)
             {
                 sum = A[endIndex] + A[startIndex];
 
                 if (sum > s)
                     endIndex--;
+
                  else if (sum < s)
                     startIndex++;
                  else 
                     return true;      
-
-                if (endIndex == startIndex)
-                    return false;
             }
 
             return false;

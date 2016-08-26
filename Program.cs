@@ -7,13 +7,36 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 3, 12};
-            //Console.WriteLine (Sum3(p, 0));
-            var arr = MoveZeroes (p);
-            foreach (var item in arr)
+            var p = new int[] {10, 9, 2, 5, 3, 7, 101, 18};
+            Console.WriteLine (LISWithDP(p));
+        }
+
+        // https://leetcode.com/problems/longest-increasing-subsequence/
+        // http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/
+        static int LISWithDP (int[] arr)
+        {
+            int n = arr.Length; 
+            int[] lis = new int[n];
+            int result = -1;
+
+            for (int i = 0; i < n; i++)
             {
-                Console.WriteLine (item);
+                lis[i] = 1;
+            } 
+
+            for (int i = 1; i < n; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (arr[i] > arr[j] && lis[i] < lis[j] + 1)
+                        lis[i] = lis[j] + 1;       
+                }                
             }
+
+            for (int i = 0; i < n; i++ )
+                result = Math.Max (result, lis[i]);
+
+            return result;
         }
 
         // https://leetcode.com/problems/move-zeroes/

@@ -7,8 +7,49 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {10, 9, 2, 5, 3, 7, 101, 18};
-            Console.WriteLine (LISWithDP(p));
+            var p = new int[] {-2, 0, 3, -5, 2, -1};
+            Console.WriteLine (RangeSumQuery(p, 0, 5));
+        }
+        
+        // https://leetcode.com/problems/range-sum-query-immutable/
+        static int RangeSumQuery (int[] nums, int A, int B)
+        {
+            int[] fetch = new int[nums.Length + 1];
+
+            for (int i = 1; i < fetch.Length; i++)
+            {
+                fetch[i] = fetch[i - 1] + nums [i - 1];                 
+            } 
+
+            return fetch[B + 1] - fetch[A];
+        }
+
+        // https://leetcode.com/problems/house-robber/
+        static int Rob(int[] nums) 
+        {
+            return 0;
+        }
+
+        // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+        static int MaxProfit (int[] prices)
+        {
+            int maxEnding = 0;
+            int maxProfit = 0;
+            int len = prices.Length;
+            int[] delta = new int[len];
+
+            for (int i = 1; i < delta.Length; i++)
+            {
+                delta[i] = prices[i] - prices[i - 1]; 
+            }
+
+            foreach (int item in delta)
+            {
+                maxEnding = Math.Max (0, maxEnding + item);
+                maxProfit = Math.Max (maxEnding, maxProfit);
+            }
+
+            return maxProfit;
         }
 
         // https://leetcode.com/problems/longest-increasing-subsequence/

@@ -7,10 +7,47 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {-2, 0, 3, -5, 2, -1};
-            Console.WriteLine (RangeSumQuery(p, 0, 5));
+            var p = new int[] {4, 2, 4, 2, 5, -1};
+            Console.WriteLine (Robber(p));
+            // 1 2 1
+            // 2 2
+            // 2 1 1
+            // 1 1 2                        
+            // 1 1 1 1 
         }
-        
+
+        // https://leetcode.com/problems/house-robber/
+        static int Robber(int[] nums) 
+        {
+            int evenMax = 0;
+            int oddMax = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (i % 2 == 0)
+                    evenMax = Math.Max (oddMax, evenMax + nums[i]);
+                else
+                    oddMax = Math.Max (evenMax, oddMax + nums[i]);
+            }
+
+            return Math.Max (evenMax, oddMax);
+        }        
+
+        // https://leetcode.com/problems/climbing-stairs/
+        static int ClimbingOneTwo (int N)
+        {
+            int[] count = new int[N + 1];
+            count[0] = 1;
+            count[1] = 1;
+
+            for (int i = 2; i < count.Length; i++)
+            {
+                count[i] = count[i - 1] + count[i - 2];
+            }
+
+            return count[N];
+        }
+
         // https://leetcode.com/problems/range-sum-query-immutable/
         static int RangeSumQuery (int[] nums, int A, int B)
         {
@@ -22,12 +59,6 @@ namespace ConsoleApplication
             } 
 
             return fetch[B + 1] - fetch[A];
-        }
-
-        // https://leetcode.com/problems/house-robber/
-        static int Rob(int[] nums) 
-        {
-            return 0;
         }
 
         // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/

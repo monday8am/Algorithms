@@ -7,13 +7,73 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {4, 2, 4, 2, 5, -1};
-            Console.WriteLine (Robber(p));
-            // 1 2 1
-            // 2 2
-            // 2 1 1
-            // 1 1 2                        
-            // 1 1 1 1 
+            var p = new int[] {0,2};
+            Console.WriteLine (MaxProduct(p));
+        }
+
+        // https://leetcode.com/problems/house-robber-ii/
+        static int RobberI(int[] nums) 
+        {
+            int len = nums.Length;
+            int evenMax = 0;
+            int oddMax = 0;
+            bool startRobbed = false;
+            bool endRobbed = false;
+
+            if (len == 1)
+                return nums[0];
+
+            if (len == 2)
+                return 0;
+
+            if (len == 3)
+                return Math.Max (nums[0] + nums[2], nums[1]);    
+
+            for (int i = 0; i < len; i++)
+            {
+                if (i % 2 == 0)
+                    evenMax = Math.Max (oddMax, evenMax + nums[i]);
+                else
+                    oddMax = Math.Max (evenMax, oddMax + nums[i]);
+
+                if (i == 0 && evenMax > oddMax)
+                    startRobbed = true;
+
+                if (i == len - 1 && Math.Abs (oddMax - evenMax) == nums[i])
+                    endRobbed = true;
+            }
+
+            int prev = Math.Max (evenMax, oddMax);  
+
+            if (endRobbed && startRobbed)
+                return prev - Math.Max (nums[0], nums[len -1]);   
+
+            return prev;      
+        }
+
+
+        // https://leetcode.com/problems/maximum-product-subarray/
+        static int MaxProduct (int[] nums)
+        {
+            int maxProduct = nums[0];
+            int currentMaxProduct = nums[0];
+            int currentMinProduct = nums[0];
+            int prevMinProduct = nums[0];
+            int prevMaxProduct = nums[0];
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                // three elements comparison.
+                currentMaxProduct = Math.Max (nums[i], Math.Max (prevMinProduct * nums[i], prevMaxProduct * nums[i]));
+                currentMinProduct = Math.Min (nums[i], Math.Min (prevMinProduct * nums[i], prevMaxProduct * nums[i]));
+                maxProduct = Math.Max (maxProduct, currentMaxProduct);
+                
+                // save to use in next iteration.
+                prevMinProduct = currentMinProduct;
+                prevMaxProduct = currentMaxProduct;
+            }
+
+            return maxProduct;
         }
 
         // https://leetcode.com/problems/house-robber/

@@ -7,9 +7,30 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {0,2};
-            Console.WriteLine (MaxProduct(p));
+            //var p = new int[] {1,1,7,4,9,2,5};
+            var p = new int[] {1,2,3,4,5,6,7,8,9};
+            Console.WriteLine (WiggleMaxLength(p));
         }
+
+        // https://leetcode.com/problems/wiggle-subsequence/
+        static int WiggleMaxLength (int[] nums)
+        {
+            if (nums.Length < 3)
+                return nums.Length;    
+
+            int prevdiff = nums[1] - nums[0];
+            int count = prevdiff != 0 ? 2 : 1;
+            for (int i = 2; i < nums.Length; i++) 
+            {
+                int diff = nums[i] - nums[i - 1];
+                if ((diff > 0 && prevdiff <= 0) || (diff < 0 && prevdiff >= 0)) {
+                    count++;
+                    prevdiff = diff;
+                }
+            }
+            return count;
+        }
+
 
         // https://leetcode.com/problems/house-robber-ii/
         static int RobberI(int[] nums) 
@@ -51,6 +72,31 @@ namespace ConsoleApplication
             return prev;      
         }
 
+        // http://www.programcreek.com/2014/03/leetcode-maximum-product-subarray-java/
+        static int MaxProduct_KadaneStyle (int[] nums)
+        {
+            int[] max = new int[nums.Length];
+            int[] min = new int[nums.Length];
+        
+            max[0] = min[0] = nums[0];            
+            int result = nums[0];
+        
+            for(int i=1; i<nums.Length; i++)
+            {
+                if (nums[i]>0)
+                {
+                    max[i]=Math.Max(nums[i], max[i-1]*nums[i]);
+                    min[i]=Math.Min(nums[i], min[i-1]*nums[i]);
+                } 
+                else
+                {
+                    max[i]=Math.Max(nums[i], min[i-1]*nums[i]);
+                    min[i]=Math.Min(nums[i], max[i-1]*nums[i]);
+                }
+            }    
+        
+            return result = Math.Max(result, max[nums.Length - 1]);         
+        }
 
         // https://leetcode.com/problems/maximum-product-subarray/
         static int MaxProduct (int[] nums)

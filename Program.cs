@@ -8,8 +8,98 @@ namespace ConsoleApplication
         public static void Main(string[] args)
         {   
             //var p = new int[] {1,1,7,4,9,2,5};
-            var p = new int[] {1,2,3,4,5,6,7,8,9};
-            Console.WriteLine (WiggleMaxLength(p));
+            //var p = new int[] {1,2,3,4,5,6,7,8,9};
+            //Console.WriteLine (WiggleMaxLength(p));
+            Console.WriteLine (FindStr ("aaaaaaaab12", "b12"));
+            //1 
+            //1 2, 12
+            //1 2 1, 12 1, 1 21
+            //1 2 1 1, 12 1 1, 1 21 1, 1 2 11, 12 11
+
+
+        }
+
+        // https://leetcode.com/problems/implement-strstr/
+        static int FindStr (string haystack, string needle)
+        {
+            if (needle == "")
+            {
+                return 0;
+            }
+
+            int counter = 0;
+
+            for (int i = 0; i < haystack.Length; i++)
+            {
+                if (haystack.Substring(i, 1) == needle.Substring (0, 1) && 
+                    haystack.Length - i >= needle.Length)
+                {
+                    counter ++;
+
+                    while (counter < needle.Length && counter > 0)
+                    {
+                        if (haystack.Substring(i + counter, 1) == needle.Substring (counter, 1))
+                        {
+                            counter++;
+                        }   
+                        else
+                        {
+                            counter = 0;
+                        }                         
+                    }
+                    
+                    if (counter == needle.Length)
+                        return i;
+                }
+            }
+
+            return -1;
+        }
+
+        // http://www.programcreek.com/2014/06/leetcode-decode-ways-java/
+        // https://leetcode.com/problems/decode-ways/
+        static int DecodeWays (string s)
+        {
+            if (s.Length == 0 || s.Substring (0, 1) == "0")
+                return 0;
+
+            if (s.Length == 1)
+                return 1;    
+
+            int[] comb = new int[s.Length]; comb[0] = 1;
+            int num = Convert.ToInt32 (s.Substring (0, 2));
+
+            if (num <= 26 && num >= 10)
+            {
+                if (s.Substring (1, 1) != "0")
+                    comb[1] = 2;
+                else
+                    comb[1] = 1;    
+            }
+            else if (s.Substring (1,1) != "0")
+            {
+                comb[1] = 1;                
+            }
+            else
+            {
+                return 0;
+            }
+
+            for (int i = 2; i < s.Length; i++)
+            {
+                if (s.Substring (i, 1) != "0")
+                {
+                    comb[i] += comb[i - 1];
+                }
+
+                num = Convert.ToInt32 (s.Substring (i - 1, 2));
+                if (num <= 26 && num >= 10)
+                {
+                    comb[i] += comb[i - 2];
+                }
+            }
+
+            return comb[s.Length - 1];
         }
 
         // https://leetcode.com/problems/wiggle-subsequence/

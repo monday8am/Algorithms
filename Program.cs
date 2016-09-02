@@ -7,16 +7,78 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            //var p = new int[] {1,1,7,4,9,2,5};
-            //var p = new int[] {1,2,3,4,5,6,7,8,9};
-            //Console.WriteLine (WiggleMaxLength(p));
-            Console.WriteLine (FindStr ("aaaaaaaab12", "b12"));
+            var p = new int[] {186,419,83,408};
+            Console.WriteLine (CoinChange (p, 6249));
             //1 
             //1 2, 12
             //1 2 1, 12 1, 1 21
             //1 2 1 1, 12 1 1, 1 21 1, 1 2 11, 12 11
 
 
+        }
+
+        // https://leetcode.com/problems/coin-change/
+        static int CoinChange (int[] coins, int amount)
+        {  
+            int result = 0;
+            int coinIndex = 0;
+            Array.Sort (coins);
+
+            while (amount > 0)
+            {
+                
+                amount -= coins[coinIndex];
+                
+            }
+
+            return -1;
+        }
+
+        // https://leetcode.com/problems/two-sum/
+        static int[] TwoSum (int[] nums, int target)
+        {
+            int[] result = new int[2];
+            Dictionary<Int32, Int32> hash = new Dictionary<Int32, Int32> ();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (hash.ContainsKey (nums[i]))
+                {
+                    result[0] = hash [nums[i]];
+                    result[1] = i;
+                    return result;
+                }
+                else if (!hash.ContainsKey(target - nums[i]))
+                {
+                    hash.Add (target - nums[i], i);
+                }
+            }
+            return result;
+        }
+
+        // https://leetcode.com/problems/increasing-triplet-subsequence/
+        static bool IncreasingTriplet (int[] nums)
+        {
+            int firstMin = Int32.MaxValue;
+            int secondMin = Int32.MaxValue;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] < firstMin)
+                {
+                    firstMin = nums [i];
+                }
+                else if (nums[i] > firstMin && nums[i] < secondMin)
+                {
+                    secondMin = nums[i];
+                }   
+                else if (nums[i] > secondMin)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // https://leetcode.com/problems/implement-strstr/

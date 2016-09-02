@@ -7,8 +7,8 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {186,419,83,408};
-            Console.WriteLine (CoinChange (p, 6249));
+            var p = new int[] {2,5,10,20};
+            Console.WriteLine (CoinChange (p, 100));
             //1 
             //1 2, 12
             //1 2 1, 12 1, 1 21
@@ -17,21 +17,37 @@ namespace ConsoleApplication
 
         }
 
+        // http://www.programcreek.com/2015/04/leetcode-coin-change-java/
         // https://leetcode.com/problems/coin-change/
         static int CoinChange (int[] coins, int amount)
         {  
-            int result = 0;
-            int coinIndex = 0;
-            Array.Sort (coins);
-
-            while (amount > 0)
+            long max = amount + 1;
+            long[] dp = new long[max];
+            for (int i = 0; i < dp.Length; i++)
             {
-                
-                amount -= coins[coinIndex];
-                
+                dp[i] = max;
             }
 
-            return -1;
+            dp[0] = 0;
+            for (int i = 0; i <= amount; i++)
+            {
+                foreach (var coin in coins)
+                {
+                    if (i + coin <= amount)
+                    {
+                        if (dp[i] == max)
+                        {
+                            dp[i+coin] = dp[i+coin];
+                        }
+                        else
+                        {
+                            dp[i+coin] = Math.Min(dp[i+coin], dp[i]+1);
+                        }
+                    }
+                }
+            }
+
+            return dp[amount] >= amount ? -1 : Convert.ToInt32 (dp[amount]);
         }
 
         // https://leetcode.com/problems/two-sum/

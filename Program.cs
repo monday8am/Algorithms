@@ -7,15 +7,184 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var p = new int[] {2,5,10,20};
-            Console.WriteLine (CoinChange (p, 100));
-            //1 
+            var p = new int[] {3, 34, 4, 12, 5, 2};
+            Console.WriteLine (UniquePaths (2,2));
             //1 2, 12
             //1 2 1, 12 1, 1 21
             //1 2 1 1, 12 1 1, 1 21 1, 1 2 11, 12 11
 
 
         }
+
+        // https://leetcode.com/problems/unique-paths/
+        static int UniquePaths (int m, int n)
+        {
+            // Zero based coordinates
+            n = n - 1;
+            m = m - 1;
+
+            if (m < 0 || n < 0 || m > 99 || n > 99)
+                return 1;
+
+            int[,] dp = new int[m + 1, n + 1];
+
+            for (int i = 0; i <= m; i++)
+            {
+                dp[i,0] = 1; 
+            }
+
+            for (int i = 0; i <= n; i++)
+            {
+                dp[0,i] = 1; 
+            }     
+
+            for (int i = 1; i <= m; i++)
+            {
+                for (int j = 1; j <= n; j++)
+                {
+                    dp[i,j] = dp[i - 1,j] + dp[i, j - 1]; 
+                }
+            }       
+
+            return dp[m, n];
+        }
+
+        // https://leetcode.com/problems/integer-break/
+        static int IntegerBreak (int n)
+        {
+            if (n < 2 || n > 58)
+                return -1;
+
+            if (n == 2) return 1;   
+            if (n == 3) return 2;   
+
+            int mid = 0;    
+            int[] dp = new int[n + 1];
+            dp[0] = 0;
+            dp[1] = 1;
+            dp[2] = 2;
+            dp[3] = 3;
+
+            for (int i = 4; i <= n; i++)
+            {
+                mid = i / 2;
+                if (i % 2 == 0)
+                {
+                    dp[i] = Math.Max (dp[mid] * dp[mid], dp[mid - 1] * dp[mid + 1]);                    
+                }
+                else
+                {
+                    dp[i] = Math.Max (dp[mid] * dp[mid + 1], dp[mid - 1] * dp[mid + 2]);                    
+                }
+            }
+
+            return dp[n];
+        }
+
+        static bool IsSubsequenceSimpleVersion (string t, string s)
+        {
+            if (s.Length == 0 && t.Length == 0)
+                return true;   
+                
+            if (t.Length == 0)
+                return false;     
+
+            if (s.Length == 0)
+                return true;              
+
+            int count = 0;
+
+            for (int i = 0; i < t.Length; i++)
+            {
+                if (t.Substring(i, 1) == s.Substring (count, 1))
+                {
+                    count++;
+                    if (count == s.Length)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        static bool IsSubsequence (string t, string s)
+        {
+             int[,] dp = new int[t.Length + 1, s.Length + 1];
+
+            for (int i = 0; i <= t.Length; i++)
+            {
+                for (int j = 0; j <= s.Length; j++)
+                {
+                    if (i == 0 || j == 0)
+                    {
+                        dp[i,j] = 0;
+                    }   
+                    else if (t.Substring (i - 1, 1) == s.Substring(j - 1, 1))
+                    {
+                        dp[i,j] = dp[i - 1, j - 1] + 1;
+                    }
+                    else
+                    {
+                        dp[i,j] = Math.Max (dp[i,j - 1], dp[i - 1, j]);
+                    }
+                }
+            }
+
+            return dp[t.Length, s.Length] == s.Length;         
+        }
+
+        // http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/
+        static int LCS (string A, string B)        
+        {
+            int[,] dp = new int[A.Length + 1, B.Length + 1];
+
+            for (int i = 0; i <= A.Length; i++)
+            {
+                for (int j = 0; j <= B.Length; j++)
+                {
+                    if (i == 0 || j == 0)
+                    {
+                        dp[i,j] = 0;
+                    }   
+                    else if (A.Substring (i - 1, 1) == B.Substring(j - 1, 1))
+                    {
+                        dp[i,j] = dp[i - 1, j - 1] + 1;
+                    }
+                    else
+                    {
+                        dp[i,j] = Math.Max (dp[i,j - 1], dp[i - 1, j]);
+                    }
+                }
+            }
+
+            return dp[A.Length, B.Length];
+        }
+
+
+        // http://www.geeksforgeeks.org/dynamic-programming-subset-sum-problem/
+        static bool SubsetSum (int[] nums, int sum)
+        {
+            bool[,] subset = new bool[sum + 1, nums.Length + 1];
+
+            for (int i = 0; i <= nums.Length; i++)
+            {
+                subset[0,i] = true;
+            }
+            
+            for (int i = 1; i <= sum; i++)
+            {
+                for (int j = 1; j <= nums.Length; j++)
+                {
+                    subset[i,j] = subset[i,j - 1];
+                    if (i >= nums[j - 1])
+                    {
+                        subset[i,j] = subset[i, j] || subset[i - nums[j-1],j-1];
+                    }
+                }
+            }
+
+            return subset[sum, nums.Length];
+        }  
 
         // http://www.programcreek.com/2015/04/leetcode-coin-change-java/
         // https://leetcode.com/problems/coin-change/

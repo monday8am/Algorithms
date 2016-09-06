@@ -8,12 +8,107 @@ namespace ConsoleApplication
         public static void Main(string[] args)
         {   
             var p = new int[] {3, 34, 4, 12, 5, 2};
-            Console.WriteLine (UniquePaths (2,2));
+            var grid = new int[,] {{1,2}, {3,4}};
+            Console.WriteLine (PerfectSquare (12));
             //1 2, 12
             //1 2 1, 12 1, 1 21
             //1 2 1 1, 12 1 1, 1 21 1, 1 2 11, 12 11
 
 
+        }
+        
+        // https://leetcode.com/problems/maximal-square/
+        static int MaximalSquare (int[,] grid)
+        {
+            int result = 0;
+            int m = grid.GetUpperBound (0) + 1;
+            int n = grid.GetUpperBound (1) + 1;
+
+            int[,] dp = new int[m + 1,n + 1];
+            int a, b, c;
+
+            for (int i = 1; i <= m; i++)
+            {
+                for (int j = 1; j <= n; j++)
+                {
+                    a = grid[i - 1, j - 1];
+                    b = grid[i, j - 1];                    
+                    c = grid[i - 1, j];
+
+                    if (a > 0 && b > 0 && c > 0)
+                    {
+                        if (b == c && a == b)
+                        {
+                            dp[i,j] = a + 1; 
+                        }
+                        else if (b > c || c > b)
+                        {
+                            dp[i,j] = Math.Max (b,c);
+                        }
+                    }  
+                    result = Math.Max (result, dp[i,j]);                  
+                }
+            }
+
+            return result;
+        }
+
+        // https://leetcode.com/problems/perfect-squares/
+        static int PerfectSquare (int n)
+        {
+            int max = (int) Math.Sqrt(n);
+            int[] dp = new int[n+1];
+
+            for (int i = 0; i < dp.Length; i++)
+            {
+                dp[i] = Int32.MaxValue - 1;
+            }
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= max; j++)
+                {
+                    if (i == j * j)
+                    {
+                        dp[i] = 1;
+                    }
+                    else
+                    {
+                        if (i > j*j)
+                            dp[i] = Math.Min (dp[i], dp[i - j*j] + 1);
+                    }
+                }
+            }
+
+            return dp[n];
+        }
+
+        // https://leetcode.com/problems/minimum-path-sum/
+        static int MinPathSum(int[,] grid)
+        {
+            int m = grid.GetUpperBound (0) + 1;
+            int n = grid.GetUpperBound (1) + 1;
+
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (i == 0 && j > 0)
+                    {
+                        grid[i,j] += grid[i,j - 1];                        
+                    }
+                    else if (i > 0 && j == 0)
+                    {
+                        grid[i,j] += grid[i - 1,j];                                                
+                    }
+                    else if (i > 0 && j > 0)
+                    {   
+                        grid[i,j] += Math.Min (grid[i - 1,j], grid[i, j - 1]);
+                    }
+                }
+            } 
+
+            return grid[m - 1,n - 1];
         }
 
         // https://leetcode.com/problems/unique-paths/

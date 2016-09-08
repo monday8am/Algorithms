@@ -3,42 +3,84 @@ using System.Collections.Generic;
 
 namespace ConsoleApplication
 {
-    public class DP
+    public class DynamicProgramming
     {
+     
         // https://leetcode.com/problems/maximal-square/
-        static int MaximalSquare (int[,] grid)
+        static int MaximalSquare (char[,] matrix)
         {
             int result = 0;
-            int m = grid.GetUpperBound (0) + 1;
-            int n = grid.GetUpperBound (1) + 1;
+            int m = matrix.GetUpperBound (0);
+            int n = matrix.GetUpperBound (1);
+            
+            if (n == 0 && m == 0)
+                return matrix[0,0] == '1' ? 1 : 0;
 
-            int[,] dp = new int[m + 1,n + 1];
-            int a, b, c;
+            if (n == 0)
+            {
+                for (int i = 0; i < m + 1; i++)
+                {
+                    if (matrix[i,0] == '1')
+                        return 1;
+                }
+            }
+
+            if (m == 0)
+            {
+                for (int i = 0; i < n + 1; i++)
+                {
+                    if (matrix[0,i] == '1')
+                        return 1;
+                }
+            }            
+
+            int[,] grid = new int[m + 1, n + 1];
+
+            for (int i = 0; i <= m; i++)
+            {
+                for (int j = 0; j <= n; j++)
+                {
+                    grid[i,j] = Convert.ToInt32 (Char.GetNumericValue (matrix[i,j]));
+                }
+            }    
+
+            int a, b, c, d;
 
             for (int i = 1; i <= m; i++)
             {
                 for (int j = 1; j <= n; j++)
                 {
+                    // box:
+                    // a b 
+                    // c d
                     a = grid[i - 1, j - 1];
                     b = grid[i, j - 1];                    
                     c = grid[i - 1, j];
+                    d = grid[i,j];
+                    
+                    if (a == 1 || b == 1 || c == 1 || d == 1)
+                        if (result == 0)
+                            result = 1;
 
-                    if (a > 0 && b > 0 && c > 0)
+                    if (a > 0 && b > 0 && c > 0 && d > 0)
                     {
                         if (b == c && a == b)
                         {
-                            dp[i,j] = a + 1; 
+                            d = a + 1; 
                         }
                         else if (b > c || c > b)
                         {
-                            dp[i,j] = Math.Max (b,c);
+                            d = Math.Max (b,c);
                         }
+
+                        grid[i,j] = d;
                     }  
-                    result = Math.Max (result, dp[i,j]);                  
+
+                    result = Math.Max (result, grid[i,j]);                  
                 }
             }
 
-            return result;
+            return result * result;
         }
 
         // https://leetcode.com/problems/perfect-squares/

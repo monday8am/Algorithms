@@ -5,7 +5,7 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var dp = new DynamicProgramming ();
+            var strings = new Strings ();
         }
     }
 }

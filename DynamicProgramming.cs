@@ -679,32 +679,6 @@ namespace ConsoleApplication
             return result;
         }
 
-        // https://leetcode.com/problems/move-zeroes/
-        static int[] MoveZeroes(int[] nums)
-        {   
-            int firstZero = -1;
-
-            for (int i = 0; i < nums.Length; i++)
-            {
-                if (nums[i] == 0)
-                {
-                    if (firstZero == -1)
-                        firstZero = i;
-                }
-                else 
-                {
-                    if (firstZero != -1)
-                    {
-                        nums[firstZero] = nums[i];
-                        nums[i] = 0;
-                        firstZero ++;                        
-                    }
-                }
-            }
-
-            return nums;
-        }
-
         // https://leetcode.com/problems/reverse-string/
         static string ReverseString(string s)
         {            

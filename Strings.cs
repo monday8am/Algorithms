@@ -7,9 +7,115 @@ namespace ConsoleApplication
     {
         public Strings ()
         {
-            int[] arr = new int[] {1,2,4,0};
-            int[] arr1 = new int[] {3};
-            MergedSortedArraySimple (arr, 3, arr1, 1); 
+            int[] arr = new int[] {0,8,9};
+            var collection = SummaryRanges (arr); 
+
+            foreach (var item in collection)
+            {
+                Console.WriteLine (item);
+            }
+        }
+
+        
+
+        static IList<string>  SummaryRanges (int[] nums)
+        {
+            int p = -1;
+            IList<string> result = new List<string> ();
+
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                if (nums[i + 1] - nums[i] > 1)
+                {
+                    if (p != -1)
+                    {
+                        result [result.Count - 1] =  result [result.Count - 1] + "->" + nums[p];
+                    }    
+                    result.Add (nums[i].ToString ());
+                    p = i;                    
+                }
+            }
+            
+            return result;
+        }
+
+
+        // https://leetcode.com/problems/pascals-triangle/
+        static IList<IList<int>> PascalTriangle(int numRows) 
+        {
+            IList<IList<int>> t = new List<IList<int>> ();
+
+            for (int i = 0; i < numRows; i++)
+            {
+                int[] l = new int[i + 1];
+                l[0] = 1;
+                l[i] = 1;
+                
+                for (int j = 1; j < i; j++)
+                {
+                    l[j] = t[i - 1][j - 1] + t[i - 1][j]; 
+                }
+
+                t.Add ((IList<int>)new List<int> (l));
+            }
+
+            return t;
+        }
+
+        // https://leetcode.com/problems/triangle/
+        static int TriangleMinTotal (List<List<int>> triangle)
+        {
+            int[] dp = new int[triangle.Count + 1];
+
+            for (int i = 1; i <= triangle.Count; i++)
+            {
+                int min = Int32.MaxValue;
+
+                for (int j = 0; j < triangle[i - 1].Count; j++)
+                {
+                    min = Math.Min (min, triangle[i - 1][j]);
+                }
+
+                dp[i] = dp[i - 1] + min;
+             }
+
+            return dp[triangle.Count];
+        }
+
+        // https://leetcode.com/problems/find-peak-element/
+        static int FindPeakElement (int[] nums)
+        {
+            for (int i = 0; i < nums.Length + 1; i++)
+            {
+                long left = i > 0 ? nums[i - 1] : Int64.MinValue;
+                long right = i < nums.Length - 1 ? nums[i + 1] : Int64.MinValue;
+
+                if (left < nums[i] && nums[i] > right)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        // https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+        static int RemoveDuplicates (int[] nums)
+        {
+            int p1 = 0;
+ 
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (nums[i] == nums[i - 1])
+                {
+                    p1++;
+                } 
+                else
+                {
+                    nums[i - p1] = nums[i];
+                }
+            }
+
+            return (nums.Length - p1);
         }
 
         // http://www.programcreek.com/2012/12/leetcode-merge-sorted-array-java/

@@ -7,13 +7,145 @@ namespace ConsoleApplication
     {
         public BitManipulation ()
         {
-            int[] nums = new int[] {1,3,4,5,5,6,6,1,3,5,4};
+            int[] nums = new int[] {1,2};
             int[] p = new int[] {0};
             int[] q = new int[] {0};
 
-            Console.WriteLine ( PowerOfThree(19684));
+            Console.WriteLine (PrintBinary (5));
 
         }
+
+        // http://www.geeksforgeeks.org/binary-representation-of-a-given-number/
+        static string PrintBinary (uint n)
+        {
+            string r = "";
+            for (int i = 0; i < 32; i++)
+            {
+                int c = 1 << i;
+                if ((n & c) > 0)
+                    r = r.Insert (0, "1");
+                else
+                    r = r.Insert (0, "0");                    
+            }
+
+            return r;
+        }
+
+        // http://www.geeksforgeeks.org/swap-all-odd-and-even-bits/
+        static uint SwapEvenOddBits (uint n)
+        {
+            // Get all even bits of x
+            uint even_bits = n & 0xAAAAAAAA; 
+        
+            // Get all odd bits of x
+            uint odd_bits  = n & 0x55555555; 
+        
+            even_bits >>= 1;  // Right shift even bits
+            odd_bits <<= 1;   // Left shift odd bits
+        
+            return (even_bits | odd_bits); // Combine even and odd bits
+        }
+
+
+        // http://www.geeksforgeeks.org/sum-of-bit-differences-among-all-pairs/
+        static int SumBitDifferences (int[] nums)
+        {
+            int r = 0;
+
+            for (int i = 0; i < 32; i++)
+            {
+                int count = 0;
+                for (int j = 0; j < nums.Length; j++)
+                {
+                    if ((nums[j] & (1 << i)) > 0)
+                    {
+                        count++;
+                    }
+                }
+
+                r += (count * (nums.Length - count) * 2);
+            }
+
+            return r;
+        }
+
+
+        // http://www.geeksforgeeks.org/find-nth-magic-number/
+        // 001, 010, 011
+        // magic number = 0*pow(5,3) + 0*pow(5,2) + 1*pow(5,1)
+        static int FindMagicNumber (int n)
+        {
+            int pow = 1;
+            int answer = 0;
+
+            while (n > 0)
+            {
+                pow = pow * 5;
+
+                if ((n & 1) == 1)
+                    answer += pow;
+
+                n >>= 1;
+            }
+
+            return answer;
+        }
+
+        static int SingleNumber2 (int[] nums)
+        {
+            Dictionary<int, int> dict = new Dictionary <int, int> ();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (dict.ContainsKey (nums[i]))
+                {
+                    dict[nums[i]] += 1;
+                }
+                else
+                {
+                    dict.Add (nums[i], 1);
+                }
+            }
+
+            foreach (var item in dict)
+            {
+                if (item.Value != 3)
+                    return item.Key;
+            }            
+
+            return -1;
+        }
+
+
+        // Don't ask me why :P
+        // https://leetcode.com/problems/missing-number/
+        static int MissingNumber (int[] nums)
+        {
+            int miss=0;
+            for(int i=0; i<nums.Length; i++){
+                miss ^= (i+1) ^nums[i];
+            }
+        
+            return miss;           
+        }
+
+        // http://math.stackexchange.com/questions/2260/proof-for-formula-for-sum-of-sequence-123-ldotsn
+        // http://math.stackexchange.com/questions/50485/sum-of-n-consecutive-numbers
+        static int MissingNumber1(int[] nums) 
+        {
+            int sum = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum += nums[i];
+            }
+            
+            // theorical sum of all nums
+            int len = nums.Length + 1;
+            int t = len * (len + 1) / 2 - sum; 
+            return Math.Abs (t);
+        }    
+        
 
         // https://leetcode.com/problems/power-of-three/
         static bool PowerOfThree (int n)

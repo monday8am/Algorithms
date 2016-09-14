@@ -7,18 +7,102 @@ namespace ConsoleApplication
     {
         public Strings ()
         {
-            int[] arr = new int[] {0,8,9};
-            var collection = SummaryRanges (arr); 
+            //int[] arr = new int[] {7,2,8,5,0,9,1,2,9,5,3,6,6,7,3,2,8,4,3,7,9,5,7,7,4,7,4,9,4,7,0,1,1,1,7,4,0,0,6};
+            int[] arr = new int[] {7};
+            Console.WriteLine (PlusOne (arr));
+        }
 
-            foreach (var item in collection)
+        // 
+
+        static string Multiply(string num1, string num2) 
+        {
+            return "";
+
+        }
+
+        // https://leetcode.com/problems/plus-one/
+        static int[] PlusOne(int[] digits) 
+        {
+            int carry = 1;
+            for (int i = digits.Length - 1; i >=    0; i--)
             {
-                Console.WriteLine (item);
+                int sum = digits[i] + carry;
+                if (sum >= 10)
+                {
+                    carry = 1;
+                }
+                else
+                {
+                    carry = 0;
+                }
+
+                digits [i] = sum % 10;
+            }
+
+            if (carry == 1)
+            {
+                int[] result = new int[digits.Length + 1];
+                Array.Copy (digits, 0, result, 1, digits.Length);
+                result[0] = 1;
+                return result;
+            }
+            else
+            {
+                return digits;
             }
         }
 
-        
 
-        static IList<string>  SummaryRanges (int[] nums)
+        // https://leetcode.com/problems/remove-element/
+        static int RemoveElement(int[] nums, int val) 
+        {
+            int p1 = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {       
+                if (nums[i] == val)
+                {
+                    p1++;
+                } 
+                else 
+                {
+                    nums[i - p1] = nums[i];
+                }
+            }
+
+            return nums.Length - p1;
+        }
+
+        // https://leetcode.com/problems/rotate-function/
+        static int MaxRotateFunction (int[] A)
+        {
+            long c = Int32.MinValue;
+            int[] arr = new int[A.Length];
+            Array.Copy (A, arr, A.Length);
+
+            for (int i = 0; i < A.Length; i++)
+            {
+                long sum = 0;
+                int last = arr[A.Length - 1];
+
+                for (int j = A.Length - 1; j > 0; j--)
+                {
+                    sum += j * arr[j];
+                    A[j] = A[j - 1];
+                    Console.WriteLine (sum);
+                }
+
+                A[0] = last;
+                               
+                c = Math.Max (c, sum);           
+                Array.Copy (A, arr, A.Length);
+            }
+
+            return Convert.ToInt32 (c);
+        }
+
+        // https://leetcode.com/problems/summary-ranges/
+        static IList<string> SummaryRanges (int[] nums)
         {
             int p = -1;
             IList<string> result = new List<string> ();

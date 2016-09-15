@@ -17,7 +17,6 @@ namespace ConsoleApplication
         static string Multiply(string num1, string num2) 
         {
             return "";
-
         }
 
         // https://leetcode.com/problems/plus-one/

@@ -7,9 +7,61 @@ namespace ConsoleApplication
     {
         public Strings ()
         {
-            //int[] arr = new int[] {7,2,8,5,0,9,1,2,9,5,3,6,6,7,3,2,8,4,3,7,9,5,7,7,4,7,4,9,4,7,0,1,1,1,7,4,0,0,6};
             int[] arr = new int[] {7};
-            Console.WriteLine (PlusOne (arr));
+            Console.WriteLine (AddBinary ("1111", "1111"));
+        }
+
+        
+
+        // https://leetcode.com/problems/add-binary/
+        static string AddBinary(string a, string b) 
+        {
+            int len = Math.Max (a.Length, b.Length) + 1;            
+            string aZeros = "", bZeros = "";
+            string r = "";
+
+            for (int i = len - 1; i >= 0; i--)
+            {
+                if (a.Length - 1 < i)
+                    aZeros = aZeros + "0";
+
+                if (b.Length - 1 < i)
+                    bZeros = bZeros + "0";                  
+            }
+
+            a = aZeros + a;
+            b = bZeros + b;
+            
+            int carry = 0;
+
+            for (int i = len - 1; i >= 0; i--)
+            {
+                string s1 = a.Substring (i, 1);
+                string s2 = b.Substring (i, 1);
+                string r1 = "";
+
+                if (s1 == "0" && s2 == "1" || s1 == "1" && s2 == "0")
+                {
+                    r1 = (carry == 1) ? "0" : "1";
+                }
+                else if (s1 == "0" && s2 == "0")
+                {
+                    r1 = (carry == 1) ? "1" : "0";
+                    carry = 0;
+                }
+                else
+                {
+                    r1 = (carry == 1) ? "1" : "0";
+                    carry = 1;
+                }
+
+                r = r1 + r;
+            }
+
+            if (r.Substring (0,1) == "0")
+                r = r.Substring (1,r.Length - 1);
+
+            return r;
         }
 
         // 

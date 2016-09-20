@@ -7,6 +7,15 @@ namespace ConsoleApplication
     {  
         public BinarySearchTree ()
         {
+            var root = new TreeNode (1);
+            root.left = new TreeNode (2);
+            root.right = new TreeNode (2);
+            root.left.left = new TreeNode (5);
+            root.left.right = new TreeNode (4);
+            root.right.left = new TreeNode (4);
+            root.right.right = new TreeNode (5);
+                        
+            /*
             var root = new TreeNode (5);
             InsertNode (root, new TreeNode (4));
             InsertNode (root, new TreeNode (8));
@@ -16,12 +25,73 @@ namespace ConsoleApplication
             InsertNode (root, new TreeNode (7));
             InsertNode (root, new TreeNode (2));            
             InsertNode (root, new TreeNode (5));                                    
-            InsertNode (root, new TreeNode (1));                                    
+            InsertNode (root, new TreeNode (1)); 
+            */                                   
 
-            Console.WriteLine (IsSameTree (root, root));       
+            Console.WriteLine (IsSymmetric (root));       
         }
 
-        // 
+        // https://leetcode.com/problems/symmetric-tree/
+        static bool IsSymmetric (TreeNode root)
+        {
+            if (root == null)
+                return true;
+
+            return AreNodeSymmetric (root, root);
+        }
+
+        static bool AreNodeSymmetric (TreeNode left, TreeNode right)
+        {
+            if (left == null && right == null)
+                return true;
+
+            if (left.right != null && right.left != null)
+            {
+                if (left.right.val != right.left.val) 
+                    return false;
+            }
+            else if (left.right != null || right.left != null)
+            {
+                return false;
+            }
+
+            if (left.left != null && right.right != null)
+            {
+                if (left.left.val != right.right.val)
+                    return false;
+            }
+            else if (left.left != null || right.right != null)
+            {
+                return false;
+            }
+
+            return AreNodeSymmetric (left.left, right.right) && AreNodeSymmetric (left.right, right.left);
+        }
+
+        // https://leetcode.com/problems/same-tree/
+        // http://www.programcreek.com/2012/12/check-if-two-trees-are-same-or-not/        
+        static bool IsSameTreeRec (TreeNode p, TreeNode q) 
+        {
+            if (p==null && q==null)
+            {
+                return true;
+            }
+            else if (p==null || q==null)
+            {
+                return false;
+            }
+        
+            if (p.val == q.val) 
+            {
+                return IsSameTreeRec (p.left, q.left) && IsSameTreeRec(p.right, q.right);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // https://leetcode.com/problems/same-tree/
         static bool IsSameTree (TreeNode p, TreeNode q)
         {
            if (p == null || q == null)

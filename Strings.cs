@@ -8,10 +8,105 @@ namespace ConsoleApplication
         public Strings ()
         {
             int[] arr = new int[] {7};
-            Console.WriteLine (AddBinary ("1111", "1111"));
+            Console.WriteLine (ReverseString (""));
         }
 
-        
+        // https://leetcode.com/problems/reverse-vowels-of-a-string/
+        static string ReverseVowels (string s)
+        {
+            char[] arr = s.ToCharArray ();
+            int p1 = 0;
+            int p2 = s.Length - 1;
+            
+            while (p2 >= p1)
+            {
+                if (IsVowel (arr[p1]) && IsVowel (arr[p2]))
+                {
+                    char tmp = arr[p1];
+                    arr[p1] = arr[p2];
+                    arr[p2] = tmp;
+
+                    p2 --;
+                    p1++;
+                }
+                else if (IsVowel (arr[p1]) && !IsVowel (arr[p2]))
+                {
+                    p2 --;
+                }
+                else if (!IsVowel (arr[p1]) && IsVowel (arr[p2]))
+                {
+                    p1++;
+                }
+                else
+                {
+                    p1 ++;
+                    p2 --;
+                }
+            }
+
+            return new string (arr);
+        }
+
+        static bool IsVowel (char c)
+        {
+            if (c == 'a' || c == 'e' || c == 'i'
+                || c == 'o' || c == 'u' )
+                return true;
+            else
+                return false;    
+        }
+
+        // https://leetcode.com/problems/reverse-string/
+        static string ReverseString (string s)
+        {
+            char[] arr = s.ToCharArray ();
+            int p1 = 0;
+            int p2 = s.Length - 1;
+
+            while (p2 >= p1)
+            {
+                char tmp = arr[p1];
+                arr[p1] = arr[p2];
+                arr[p2] = tmp;
+
+                p2 --;
+                p1++;
+            }
+
+            return new string (arr);
+        }
+
+        // https://leetcode.com/problems/zigzag-conversion/
+        static string ZizagConversion (string s, int numRows) 
+        {
+            string r = "";
+            int index = 0;
+            string[] strings = new string[numRows];
+
+            while (index < s.Length)
+            {
+                for (int i = 0; i < numRows; i++)
+                {
+                    if (index < s.Length)
+                    {
+                        strings[i] += s.Substring (index, 1);
+                        index ++;
+                    }
+                }
+
+                if (index < s.Length)
+                    strings[numRows/2] += s.Substring (index, 1);
+
+                index++;
+            }
+
+            foreach (var item in strings)
+            {
+                r = r + item;
+            }
+            
+            return r;
+        }
 
         // https://leetcode.com/problems/add-binary/
         static string AddBinary(string a, string b) 

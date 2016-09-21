@@ -6,6 +6,64 @@ namespace ConsoleApplication
     public class DynamicProgramming
     {
      
+        public DynamicProgramming ()
+        {
+          
+            Console.WriteLine (IsInterleaveString( "aabcc","dbbca", "aadbbcbcac"));
+        }
+
+
+        static bool IsInterleaveString (string s1, string s2, string s3)
+        {
+            if (s1 == "" && s2 == "" && s3 == "")
+                return true;
+
+            string s1_ = s1;
+            string s2_ = s2;    
+
+            if (s1.Length > 0 && s1.Substring (0,1) == s3.Substring (0,1))
+            {
+                s1 = s1.Substring (1, s1.Length - 1);
+            }    
+            else if (s2.Length > 0 &&  s2.Substring (0,1) == s3.Substring (0,1))
+            {
+                s2 = s2.Substring (1, s2.Length - 1); 
+            }
+            else 
+            {
+                return false;
+            }
+
+            if (s3.Length > 0)
+                s3 = s3.Substring (1, s3.Length - 1); 
+
+            return IsInterleaveString (s1_, s2, s3) || IsInterleaveString (s1, s2_, s3);                
+        }
+
+
+        // https://leetcode.com/problems/interleaving-string/
+        static bool IsInterleaveString1 (string s1, string s2, string s3)
+        {
+            //int[] dp1 = new int[s1.Length + 1];
+            //int[] dp2 = new int[s2.Length + 1];
+            int p1 = 0;
+            int p2 = 0;
+
+            for (int i = 0; i < s3.Length; i++)
+            {
+                if (s3.Substring (i, 1) == s1.Substring (p1, 1))
+                {
+                    p1 ++;
+                }
+            }
+
+            return false;
+
+
+        }
+
+
+
         // https://leetcode.com/problems/maximal-square/
         static int MaximalSquare (char[,] matrix)
         {

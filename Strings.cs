@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace ConsoleApplication
 {
@@ -8,7 +9,120 @@ namespace ConsoleApplication
         public Strings ()
         {
             int[] arr = new int[] {7};
-            Console.WriteLine (ReverseString (""));
+            Console.WriteLine (DecodeString ("2[2[b]]"));
+        }
+
+        // https://leetcode.com/problems/decode-string/
+        static string DecodeString(string s) 
+        {
+            if (s.Length ==  0)
+                return "";
+
+            string r = "";
+            Stack<string> nums = new Stack<string> ();
+            Stack<string> strs = new Stack<string> ();
+
+            bool stackingLetters = false;
+            bool stackingNumbers = false;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                int num = -1;
+                string c = s.Substring (i, 1);
+
+                if (Int32.TryParse (c, out num))
+                {
+                    if (stackingNumbers)
+                    {
+                        nums.Push (nums.Pop () + c);
+                    }
+                    else 
+                    {
+                        nums.Push (c);
+                        stackingNumbers = true;
+                    }
+                }
+                else if (c == "[")
+                {
+                    stackingLetters = true;
+                    stackingNumbers = false;
+                }
+                else if (c == "]")
+                {
+                    string intermedialStr = "";
+                    int lastNum = 0;
+                    Int32.TryParse (nums.Pop (), out lastNum);
+                    string lastStr = strs.Pop ();
+
+                    for (int j = 0; j < lastNum; j++)
+                    {
+                        intermedialStr += lastStr;
+                    }
+
+                    if (nums.Count > 0)
+                    {
+                       if (strs.Count > 0)
+                        {
+                            strs.Push (strs.Pop () + intermedialStr);
+                        }
+                        else 
+                        {
+                            strs.Push (intermedialStr);
+                        }
+                    }
+                    else 
+                    {
+                        r += intermedialStr;
+                        stackingLetters = false;
+                    }
+                }
+                else
+                {
+                    if (stackingLetters)
+                    {
+                        if (nums.Count == strs.Count)
+                        {
+                            strs.Push (strs.Pop () + c);
+                        }
+                        else 
+                        {
+                            strs.Push (c);
+                        }
+                    }
+                    else 
+                    {
+                        r += c;
+                    }
+                }
+            }
+
+            return r;
+        }
+
+        // https://leetcode.com/problems/longest-palindromic-substring/
+        static string LongestPalindrome(string s) 
+        {
+            return "";
+        }    
+
+        // https://leetcode.com/problems/valid-palindrome/
+        static bool ValidPalindrome (string s)
+        {
+            if (s == null || s.Length == 0)
+                return true;
+
+            Regex rgx = new Regex("[^a-zA-Z0-9]");
+            s = rgx.Replace (s, "").ToLower ();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s.Substring (i, 1) != s.Substring (s.Length - 1 - i, 1))
+                {
+                    return false;
+                }
+            }
+
+            return true;   
         }
 
         // https://leetcode.com/problems/reverse-vowels-of-a-string/

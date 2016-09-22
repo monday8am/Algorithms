@@ -28,7 +28,36 @@ namespace ConsoleApplication
             InsertNode (root, new TreeNode (1)); 
             */                                   
 
-            Console.WriteLine (IsSymmetric (root));       
+            Console.WriteLine (FirstBadVersion (10));       
+        }
+
+        // https://leetcode.com/problems/first-bad-version/
+        static int FirstBadVersion(int n) 
+        {
+            return FirstBadVersionRec (1, n);
+        }
+
+        // https://leetcode.com/problems/first-bad-version/
+        static int FirstBadVersionRec (int start, int end)
+        {
+            int m = start + (end - start) / 2;
+
+            if (start >= end)
+                return start;
+
+            if (IsBadVersion (m))
+            {
+                return FirstBadVersionRec (start, m);
+            }
+            else
+            {
+                return FirstBadVersionRec (m + 1, end);
+            }
+        }
+
+        static bool IsBadVersion(int version)
+        {
+            return version != 6;
         }
 
         // https://leetcode.com/problems/symmetric-tree/

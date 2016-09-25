@@ -31,6 +31,33 @@ namespace ConsoleApplication
             Console.WriteLine (FirstBadVersion (10));       
         }
 
+        // https://leetcode.com/problems/count-complete-tree-nodes/
+        static int CountNodes (TreeNode root)
+        {
+            int leftCount = 0;
+            int rightCount = 0;
+            TreeNode node = root;
+
+            while (node.left != null)
+            {
+                node = node.left;
+                leftCount ++;
+            }
+
+            node = root;
+            
+            while (node.right != null)
+            {
+                node = node.right;
+                rightCount ++;
+            }
+
+            if (leftCount == rightCount)
+                return (2<<(leftCount-1))-1;
+
+            return leftCount;
+        }
+
         // https://leetcode.com/problems/first-bad-version/
         static int FirstBadVersion(int n) 
         {

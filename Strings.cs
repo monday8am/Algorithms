@@ -9,9 +9,34 @@ namespace ConsoleApplication
         public Strings ()
         {
             int[] arr = new int[] {7};
-            Console.WriteLine (DecodeString ("2[2[b]]"));
+            Console.WriteLine (IsIsomorphic ("paper", "title"));
         }
 
+        // https://leetcode.com/problems/isomorphic-strings/
+        static bool IsIsomorphic(string s, string t) 
+        {
+            Dictionary<string, string> hash = new Dictionary<string, string> ();
+            string str = "";
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                str = s.Substring(i, 1);
+
+                if (hash.ContainsKey (str))
+                {
+                    if (hash[str] != t.Substring (i, 1))
+                        return false;
+                }
+                else
+                {
+                    hash.Add (str, t.Substring (i, 1));
+                }
+            }
+
+            return true;
+        }
+
+        // TODO : revisar!
         // https://leetcode.com/problems/decode-string/
         static string DecodeString(string s) 
         {

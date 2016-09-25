@@ -7,10 +7,36 @@ namespace ConsoleApplication
     {  
         public Arrays ()
         {
-            int[] arr = new int[] {1,2,2,1};
+            int[] arr = new int[] {1,3,2,1,4,3};
             int[] arr1 = new int[] {2,2};
-            Console.WriteLine (SearchInsertPos (arr, 0));
-            Intersection (arr, arr1);
+            Console.WriteLine (MinSubArrayLen (7, arr));
+        }
+
+        // https://leetcode.com/problems/minimum-size-subarray-sum/
+        static int MinSubArrayLen (int s, int[] nums) 
+        {
+            int min = Int32.MaxValue;
+            int total = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                total += nums[i];
+            }
+
+            if (total < s)
+                return 0;
+
+            int p1 = 0;
+            int p2 = nums.Length - 1;
+
+            while (total >= s)
+            {
+                min = Math.Min (min, p2 - p1 + 1);
+                total -= nums [p1++];
+                Console.WriteLine (total + " > " + s);
+            }  
+
+            return min;  
         }
 
         // https://leetcode.com/problems/intersection-of-two-arrays/

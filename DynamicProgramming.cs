@@ -8,10 +8,36 @@ namespace ConsoleApplication
      
         public DynamicProgramming ()
         {
-          
-            Console.WriteLine (IsInterleaveString( "aabcc","dbbca", "aadbbcbcac"));
+            var arr = new int[] {1, -2, 0, 9, -1, -2};
+            //Console.WriteLine (IsInterleaveString( "aabcc","dbbca", "aadbbcbcac"));
+            Console.WriteLine (NumberSolitaire (arr));
         }
 
+        // https://codility.com/programmers/task/number_solitaire/
+        static int NumberSolitaire (int[] A)
+        {
+            int[] dp = new int[A.Length];
+
+            for (int i = 1; i < dp.Length; i++)
+            {
+                dp[i] = Int32.MinValue;
+            }
+
+            dp[0] = A[0];
+
+            for (int i = 1; i < A.Length; i++)
+            {
+                for (int k = 1; k < 7; k++)
+                {
+                    if (i - k >= 0)
+                    {
+                        dp[i] = Math.Max (dp[i], A[i] + dp[i - k]);
+                    }
+                }
+            }
+
+            return dp[A.Length - 1];
+        }
 
         static bool IsInterleaveString (string s1, string s2, string s3)
         {

@@ -14,10 +14,9 @@ namespace ConsoleApplication
         }
 
 
+        // TODO Not finished!
         static int SuperUglyNumber (int n, int[] primes)
         {
-            int result = 0;
-            
             int[] p = new int[primes.Length + 1];
             p[0] = 1;
 

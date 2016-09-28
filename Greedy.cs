@@ -7,10 +7,60 @@ namespace ConsoleApplication
     {
         public Greedy ()
         {
-          var gas  =  new int [] {2};
-          var cost =  new int[]  {2};
-          Console.WriteLine (GasStation (gas, cost));
+          var A  =  new int [] {1, 3, 7, 9, 9};
+          var B =  new int[]  {5, 6, 8, 9, 10};
+          var arr =  new int[]  {1,2,3,4,1,1,3};
+          
+          Console.WriteLine (MaxNonoverlappingSegments (A, B));
         }
+
+        
+
+        // https://codility.com/programmers/task/max_nonoverlapping_segments/
+        static int MaxNonoverlappingSegments (int[] A, int[] B)
+        {
+            if (A.Length == 0)
+                return 0;
+
+            int res = 1;
+            int lastEnd = B[0];
+
+            for (int i = 1; i < B.Length; i++)
+            {
+                if (lastEnd < A[i])
+                {
+                    res++;
+                    lastEnd = B[i];
+                }
+            }
+            
+            return res;
+        }
+
+        // https://codility.com/programmers/task/tie_ropes/
+        static int TieRopes (int K, int[] A)
+        {
+            long sum = 0;
+            int res = 0;
+
+            for (int i = 0; i < A.Length; i++)
+            {
+                if (A[i] >= K || 
+                   sum + A[i] >= K
+                   )
+                {
+                    res++;
+                    sum = 0;
+                }
+                else
+                {
+                    sum += A[i];
+                }
+            }
+
+            return res;
+        }
+
 
         // https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
         // http://www.programcreek.com/2014/02/leetcode-best-time-to-buy-and-sell-stock-ii-java/

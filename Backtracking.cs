@@ -18,8 +18,8 @@ namespace ConsoleApplication
                             {1, 1, 1, 1}
                         };                   
               
-            var p = new RatMaze ();  
-            Console.WriteLine (p.SolveMaze (maze));                  
+            var p = new FillArrayProblem ();  
+            Console.WriteLine (p.SolveFA (7));                  
         }
 
 
@@ -324,6 +324,8 @@ namespace ConsoleApplication
             }            
         }
 
+        // TODO: Unfinished
+        // http://www.geeksforgeeks.org/fill-two-instances-numbers-1-n-specific-way/
         private class FillArrayProblem
         {
             void PrintResult (int[] arr)
@@ -332,25 +334,28 @@ namespace ConsoleApplication
                     Console.Write (item + ", ");
             }
 
-            public bool SolverFAUtil (int N, int[] res, int index)
+            public bool SolverFAUtil (int[] res, int curr)
             {
-                if (N == 0)
+                if (curr == 0)
                 {
                     return true;
                 }
 
-                if (index + N + 1 <= res.Length - 1 && res[index] != 0)
+                for (int i = 0; i < res.Length - curr - 1; i++)
                 {
-                    res[index] = N;
-                    res[index + N + 1] = N;
-                    
-                    if (SolverFAUtil (N - 1, res, index - 1))
+                    if (res[curr + i + 1] == 0 && res[i] == 0)
                     {
-                        return true;
-                    }
+                        res[i] = curr;
+                        res[i + curr + 1] = curr;
 
-                    res[index] = 0;
-                    res[index + N + 1] = 0;
+                        if (SolverFAUtil (res, curr - 1))
+                        {
+                            return true;
+                        }
+
+                        res[i] = 0;
+                        res[i + curr + 1] = 0;
+                    }                    
                 }
 
                 return false;
@@ -359,7 +364,11 @@ namespace ConsoleApplication
             public bool SolveFA (int N)
             {
                 int[] res = new int[2 * N];
-                return SolverFAUtil (N, res, 0);
+                
+                bool result = SolverFAUtil (res, N);
+                PrintResult (res);
+
+                return result;
             }
         }
 

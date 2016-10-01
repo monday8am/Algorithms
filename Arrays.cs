@@ -7,9 +7,41 @@ namespace ConsoleApplication
     {  
         public Arrays ()
         {
-            int[] arr = new int[] {1,3,2,1,4,3};
+            int[] arr = new int[] {2, 3, 6, 7};
             int[] arr1 = new int[] {2,2};
-            Console.WriteLine (MinSubArrayLen (7, arr));
+            Console.WriteLine (CombinationSum (arr, 7));
+        }
+
+        // https://leetcode.com/problems/combination-sum/
+        static IList<IList<int>> CombinationSum (int[] candidates, int target)
+        {
+            List<IList<int>> res = new List<IList<int>> ();
+            Array.Sort (candidates);
+
+            CombinationSumUtil (candidates, target, 0, new List<int> (), res);
+
+            return res;
+        }
+
+        // http://www.programcreek.com/2014/02/leetcode-combination-sum-java/
+        // https://leetcode.com/problems/combination-sum/
+        static void CombinationSumUtil (int[] candidates, int target, int index, List<int> partialRes, 
+                                                    IList<IList<int>> res)
+        {
+            if (target == 0)
+            {
+                res.Add (new List<int> (partialRes));
+                return;
+            }
+
+            for (int i = index; i < candidates.Length; i++)
+            {
+                if (target < candidates[i])
+                    return;
+                partialRes.Add (candidates[i]);     
+                CombinationSumUtil (candidates, target - candidates [i], i, partialRes, res);
+                partialRes.Remove(candidates[i]);    
+            }
         }
 
         // https://leetcode.com/problems/minimum-size-subarray-sum/

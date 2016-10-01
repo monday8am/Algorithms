@@ -18,8 +18,8 @@ namespace ConsoleApplication
                             {1, 1, 1, 1}
                         };                   
               
-            var p = new FillArrayProblem ();  
-            Console.WriteLine (p.SolveFA (7));                  
+            var p = new StringPermutations ();  
+            p.SolveStringPermutations ("ABCD");                  
         }
 
 
@@ -372,5 +372,150 @@ namespace ConsoleApplication
             }
         }
 
+        private class SudokuProblem
+        {
+            private int N = 9;
+
+            void PrintSolution (int[,] board)
+            {
+                for (int i = 0; i < N; i++)
+                {
+                    for (int j = 0; j < N; j++)
+                        Console.Write(" " + board [i,j] + " ");
+                    Console.WriteLine();
+                }
+            }            
+
+            bool FindEmptyCell (int[,] board, out int row, out int col)
+            {
+                row = 0;
+                col = 0;
+
+                for (row = 0; row < N; row++)
+                    for (col = 0; col < N; col++)
+                        if (board [row,col] == 0)
+                            return true;
+                return false;
+            }
+
+            bool UsedInRow (int[,] board, int row, int num)
+            {
+                for (int i = 0; i < N; i++)
+                    if (board[row, i] == num)
+                        return true;
+                return false;
+            }
+
+            bool UsedInColumn (int[,] board, int column, int num)
+            {
+                for (int i = 0; i < N; i++)
+                    if (board[i, column] == num)
+                        return true;
+                return false;                
+            }
+
+            bool UsedInBox (int[,] board, int startBoxRow, int startBoxCol, int num)
+            {
+                for (int row = 0; row < 3; row++)
+                    for (int col = 0; col < 3; col++)
+                        if (board[row + startBoxRow, col + startBoxCol] == num)
+                            return true;
+                return false;                
+            }
+
+            bool IsSafeCellForNum (int[,] board, int row, int col, int num)
+            {
+            return !UsedInRow(board, row, num) &&
+                   !UsedInColumn(board, col, num) &&
+                   !UsedInBox(board, row - row % 3 , col - col % 3, num);
+            }
+
+            bool SolveSudokuUtil (int[,] board)
+            {
+                int row = 0, col = 0;
+
+                if (!FindEmptyCell (board, out row, out col))
+                    return true;
+
+                for (int i = 1; i <= N; i++)
+                {
+                    if (IsSafeCellForNum (board, row, col, i))
+                    {
+                        board [row,col] = i;
+
+                        if (SolveSudokuUtil (board))
+                        {
+                            return true;
+                        }
+
+                        // Backtracking!
+                        board [row, col] = 0;
+                    }                    
+                }    
+                return false;
+            }
+
+            public void SolveSudoku ()
+            {
+                // 0 means unassigned cells
+                int[,] board = {{3, 0, 6, 5, 0, 8, 4, 0, 0},
+                                {5, 2, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 8, 7, 0, 0, 0, 0, 3, 1},
+                                {0, 0, 3, 0, 1, 0, 0, 8, 0},
+                                {9, 0, 0, 8, 6, 3, 0, 0, 5},
+                                {0, 5, 0, 0, 9, 0, 6, 0, 0},
+                                {1, 3, 0, 0, 0, 0, 2, 5, 0},
+                                {0, 0, 0, 0, 0, 0, 0, 7, 4},
+                                {0, 0, 5, 2, 0, 6, 3, 0, 0}};
+
+                if (SolveSudokuUtil (board) == true)
+                    PrintSolution(board);
+                else
+                    Console.WriteLine ("No solution exists");               
+            }
+        }
+
+        private class StringPermutations
+        {
+            IList<string> strList = new List<string> ();
+
+            void PrintResult ()
+            {
+                foreach (var item in strList)
+                {
+                    Console.WriteLine (item);
+                }
+            }
+
+            void StringPermutationsUtil (string S, string subStr)
+            {
+                string c = "";
+
+                if (subStr.Length == S.Length)
+                {
+                    strList.Add (subStr);
+                    return;
+                }
+
+                for (int i = 0; i < S.Length; i++)
+                {
+                    c = S.Substring (i,1);
+                    if (!subStr.Contains (c))
+                    {
+                        StringPermutationsUtil (S, subStr + c);
+                    }
+                }
+            }
+
+            public void SolveStringPermutations (string S)
+            {
+                for (int i = 0; i < S.Length; i++)
+                {
+                    StringPermutationsUtil (S, S.Substring (i, 1));
+                }
+
+                PrintResult ();
+            }            
+        }
     }
 }        

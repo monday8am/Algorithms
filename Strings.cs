@@ -9,7 +9,55 @@ namespace ConsoleApplication
         public Strings ()
         {
             int[] arr = new int[] {7};
-            Console.WriteLine (IsIsomorphic ("paper", "title"));
+            Console.WriteLine (LetterCombinations ("24"));
+        }
+
+
+        // https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+        static IList<string> LetterCombinations(string digits) 
+        {
+            List<string> res = new List<string> ();
+            Dictionary<string, string> map = new Dictionary<string, string> ();
+
+            map.Add ("2", "abc");
+            map.Add ("3", "def");
+            map.Add ("4", "ghi");
+            map.Add ("5", "jkl");
+            map.Add ("6", "mno");
+            map.Add ("7", "pqrs");
+            map.Add ("8", "tuv");
+            map.Add ("9", "wxyz");
+
+            List<string> comb = new List<string> ();
+
+            for (int i = 0; i < digits.Length; i++)
+            {
+                string key = digits.Substring (i, 1);
+                if (!map.ContainsKey (key))
+                   return new List<string> ();                
+                comb.Add (map[key]);
+            } 
+
+            LetterCombinationsUtil (comb, "", 0, res);           
+
+            return res;
+        }
+
+
+        static void LetterCombinationsUtil (List<string> comb, string root, int index, List<string> res)
+        {
+            if (root.Length == comb.Count)
+            {
+                res.Add (root);
+                return;
+            }
+
+            string str = comb[index];
+            
+            for (int i = 0; i < str.Length; i++)
+            {
+                LetterCombinationsUtil (comb, root + str.Substring (i, 1), index + 1, res);
+            }
         }
 
         // https://leetcode.com/problems/isomorphic-strings/

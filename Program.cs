@@ -5,7 +5,7 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {   
-            var bt = new Arrays ();
+            var bt = new Sort ();
         }
     }
 }

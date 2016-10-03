@@ -13,7 +13,6 @@ namespace ConsoleApplication
             root.left.left = new TreeNode (5);
             root.left.right = new TreeNode (4);
             root.right.left = new TreeNode (4);
-            root.right.right = new TreeNode (5);
                         
             /*
             var root = new TreeNode (5);
@@ -28,7 +27,32 @@ namespace ConsoleApplication
             InsertNode (root, new TreeNode (1)); 
             */                                   
 
-            Console.WriteLine (FirstBadVersion (10));       
+            Console.WriteLine (SumTreeNumbers (root));       
+        }
+
+        // https://leetcode.com/problems/sum-root-to-leaf-numbers/
+        static int SumTreeNumbers(TreeNode root) 
+        {
+            if (root == null)
+                return 0;
+                
+            return SumTreeNumbersUtil (root, 0, "");
+        }
+
+        static int SumTreeNumbersUtil (TreeNode root, int sum, string partial)
+        {
+            partial += root.val;       
+            
+            if (root.left == null && root.right == null)
+            {
+                sum += Int32.Parse (partial);
+                return sum;
+            }
+
+            int left = root.left != null ? SumTreeNumbersUtil (root.left, sum, partial) : 0;
+            int right = root.right != null ? SumTreeNumbersUtil (root.right, sum, partial) : 0;
+
+            return left + right;
         }
 
         // https://leetcode.com/problems/count-complete-tree-nodes/

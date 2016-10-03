@@ -12,6 +12,23 @@ namespace ConsoleApplication
             Console.WriteLine (CombinationSum (arr, 7));
         }
 
+        // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+        static int FindMin(int[] nums) 
+        {
+
+        }  
+
+        static int FindMinUtil (int[] nums, int target, int min)
+        {
+            if (max - min == 1)
+                return 0;
+
+            if (target > min)  
+            {
+                
+            }  
+        }  
+
         // https://leetcode.com/problems/combination-sum/
         static IList<IList<int>> CombinationSum (int[] candidates, int target)
         {
@@ -40,7 +57,7 @@ namespace ConsoleApplication
                     return;
                 partialRes.Add (candidates[i]);     
                 CombinationSumUtil (candidates, target - candidates [i], i, partialRes, res);
-                partialRes.Remove(candidates[i]);    
+                partialRes.Remove(candidates[i]); // Backtracking!   
             }
         }
 

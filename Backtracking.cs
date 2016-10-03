@@ -18,8 +18,8 @@ namespace ConsoleApplication
                             {1, 1, 1, 1}
                         };                   
               
-            var p = new StringPermutations ();  
-            p.SolveStringPermutations ("ABCD");                  
+            var p = new SudokuProblem ();  
+            p.SolveSudoku ();                
         }
 
 

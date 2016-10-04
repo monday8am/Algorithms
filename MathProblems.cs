@@ -7,7 +7,41 @@ namespace ConsoleApplication
     {
         public MathProblems ()
         {
-           Console.WriteLine (SQRt (16));           
+           Console.WriteLine (HappyNumber (256));           
+        }
+
+
+        //https://leetcode.com/problems/happy-number/
+        static bool HappyNumber (int num)
+        {
+            return HappyNumberUtil (num, new HashSet<long> ());
+        }
+
+        static bool HappyNumberUtil (int num, HashSet<long> hash)
+        {
+            long sum = 0;      
+
+            while (num != 0) 
+            {
+                sum += Pow (num % 10, 2);
+                num /= 10;
+            }
+
+            if (sum == 1)
+                return true;
+            else if (hash.Contains(sum))
+                return false;
+            else 
+                hash.Add (sum);
+
+            return HappyNumberUtil (Convert.ToInt32 (sum), hash);    
+        }
+
+        // https://leetcode.com/problems/add-digits/
+        static int DigitalRoot (int n)
+        {
+            // https://en.wikipedia.org/wiki/Digital_root#Significance_and_formula_of_the_digital_root
+            return n - 9 * ((n - 1)/9);
         }
 
         // https://leetcode.com/problems/count-primes/

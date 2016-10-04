@@ -7,26 +7,44 @@ namespace ConsoleApplication
     {  
         public Arrays ()
         {
-            int[] arr = new int[] {2, 3, 6, 7};
+            int[] arr = new int[] {2,3,1,2,4,3};
             int[] arr1 = new int[] {2,2};
-            Console.WriteLine (CombinationSum (arr, 7));
+
+            Console.WriteLine (MinSubArray (7, arr));
         }
+
+        // https://leetcode.com/problems/minimum-size-subarray-sum/
 
         // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
         static int FindMin(int[] nums) 
         {
-
-        }  
-
-        static int FindMinUtil (int[] nums, int target, int min)
-        {
-            if (max - min == 1)
+            if (nums.Length == 0)
                 return 0;
 
-            if (target > min)  
+            if (nums.Length == 1)
+                return nums[0];
+
+            return FindMinUtil (nums, 0, nums.Length - 1);
+        }  
+
+        static int FindMinUtil (int[] nums, int start, int end)
+        {
+            if (end - start == 1)
             {
+                if (nums[end] < nums[start])
+                {
+                    return nums[end];
+                }
                 
-            }  
+                return nums[0];
+            }
+
+            int targetIndex = start + (end - start)/2;    
+
+            if (nums[targetIndex] > nums[0])  
+                return FindMinUtil (nums, targetIndex, end);
+            else 
+                return FindMinUtil (nums, start, targetIndex);            
         }  
 
         // https://leetcode.com/problems/combination-sum/
@@ -59,6 +77,31 @@ namespace ConsoleApplication
                 CombinationSumUtil (candidates, target - candidates [i], i, partialRes, res);
                 partialRes.Remove(candidates[i]); // Backtracking!   
             }
+        }
+
+        // https://leetcode.com/problems/minimum-size-subarray-sum/        
+        static int MinSubArray (int s, int[] nums)
+        {
+            int p1 = 0;
+            int sum = 0;
+            int min = Int32.MaxValue;
+
+            for (int p2 = 0; p2 < nums.Length; p2++)
+            {
+                sum += nums[p2];
+
+                while (sum >= s && p1 < nums.Length)
+                {
+                    min = Math.Min (min, p2 - p1 + 1);                                    
+                    sum -= nums[p1];
+                    p1++;
+                }
+            }
+
+            if (min == Int32.MaxValue)
+                return 0;
+
+            return min;
         }
 
         // https://leetcode.com/problems/minimum-size-subarray-sum/

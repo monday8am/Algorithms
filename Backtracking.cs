@@ -16,11 +16,91 @@ namespace ConsoleApplication
                             {1, 0, 0, 1},
                             {1, 0, 0, 0},
                             {1, 1, 1, 1}
-                        };                   
+                        };   
+
+
+            char[,] cBoard = {{'3', '.', '6', '5', '.', '8', '4', '.', '.'},
+                            {'5', '2', '.', '.', '.', '.', '.', '.', '.'},
+                            {'.', '8', '7', '.', '.', '.', '.', '3', '1'},
+                            {'.', '.', '3', '.', '1', '.', '.', '8', '.'},
+                            {'9', '.', '.', '8', '6', '3', '.', '.', '5'},
+                            {'.', '5', '.', '.', '9', '.', '6', '.', '.'},
+                            {'1', '3', '.', '.', '.', '.', '2', '5', '.'},
+                            {'.', '.', '.', '.', '.', '.', '.', '7', '4'},
+                            {'.', '.', '5', '2', '.', '6', '3', '.', '.'}};  
+
+            //var sudoko = new SudokuProblem ();
+            //sudoko.SolveSudoku (cBoard);                                                      
               
-            var p = new SudokuProblem ();  
-            p.SolveSudoku ();                
+            /*  
+            var arr = GenerateParenthesis (3); 
+            foreach (var item in arr)
+            {
+                foreach (var item1 in item)
+                {
+                    Console.Write (item1);
+                }
+                Console.WriteLine ("");
+            }
+            */         
         }
+
+        // https://leetcode.com/problems/generate-parentheses/
+        public IList<string> GenerateParenthesis(int n) 
+        {
+            List<string> l = new List<string> ();
+            GenerateParenthesisUtil (2 * n, "");
+            return l;
+        }
+
+        public string GenerateParenthesisUtil (int n, string tmp) 
+        {
+            if (n == 0)
+            {
+                return "";
+            }
+
+            if (tmp.Length == 0)
+                return GenerateParenthesisUtil (n - 1, tmp + "("); 
+            else if (n == 1)
+                return GenerateParenthesisUtil (n - 1, tmp + ")");            
+            else 
+            {
+                return GenerateParenthesisUtil (n - 1, tmp + ")") + GenerateParenthesisUtil (n - 1, tmp + "("); 
+            }
+        }        
+
+        // https://leetcode.com/problems/permutations/
+        static IList<IList<int>> ArrayPermutations (int[] nums)
+        {
+            List<IList<int>> res = new List<IList<int>> ();
+            ArrayPermutationsUtil (nums, 0, res);            
+            return res;
+        }
+
+        static void ArrayPermutationsUtil (int[] nums, int start, IList<IList<int>> res)
+        {
+            if (start >= nums.Length)
+            {
+                res.Add (new List<int> (nums));
+                return;
+            }
+
+            for (int i = start; i < nums.Length; i++)
+            {
+                nums = Swap (nums, start, i);
+                ArrayPermutationsUtil (nums, start + 1, res);
+                nums = Swap (nums, i, start); // backtracking!                
+            }
+        }
+
+        static int[] Swap(int[] a, int i, int j) 
+        {
+            int temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+            return a;
+        }        
 
 
         // http://www.programcreek.com/2014/06/leetcode-word-search-java/
@@ -473,6 +553,24 @@ namespace ConsoleApplication
                 else
                     Console.WriteLine ("No solution exists");               
             }
+
+            public void SolveSudoku (char[,] board)
+            {
+                int[,] intBoard = new int [N,N];
+                for (int i = 0; i < N; i++)
+                    for (int j = 0; j < N; j++)
+                        intBoard[i,j] = board[i,j] != '.' ? Convert.ToInt32 (board[i,j]) : 0;
+
+                if (SolveSudokuUtil (intBoard) == true)
+                {
+                    for (int i = 0; i < N; i++)
+                        for (int j = 0; j < N; j++)
+                            Console.WriteLine (intBoard[i,j]);
+                            //board[i,j] = Char. intBoard[i,j]);                   
+                }
+                else
+                    Console.WriteLine ("No solution exists");               
+            }            
         }
 
         private class StringPermutations

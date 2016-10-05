@@ -7,7 +7,58 @@ namespace ConsoleApplication
     {
         public MathProblems ()
         {
-           Console.WriteLine (HappyNumber (256));           
+           Console.WriteLine (ReverseInteger (-2147483648));           
+        }
+
+        // https://leetcode.com/problems/reverse-integer/
+        static int ReverseInteger (int n)
+        {
+            long l = Convert.ToInt64 (n);
+            int negative = l < 0 ? -1 : 1;
+            string s = Convert.ToString (Math.Abs (l));
+            
+            char[] arr = s.ToCharArray ();
+            int p1 = 0;
+            int p2 = s.Length - 1;
+
+            while (p2 >= p1)
+            {
+                char tmp = arr[p1];
+                arr[p1] = arr[p2];
+                arr[p2] = tmp;
+
+                p2 --;
+                p1++;
+            }
+
+            s = new string (arr);
+            l = Int64.Parse (s);
+
+            if (l > Int32.MaxValue)
+                return 0;
+
+            return negative * Convert.ToInt32 (l);
+        }
+
+        // https://leetcode.com/problems/integer-replacement/
+        static int IntegerReplacement(int n) 
+        {
+            if (n == 0)
+                return -1;
+            return IntegerReplacementUtil (n, 0);
+        }
+
+        static int IntegerReplacementUtil (long n, int res) 
+        {
+            if (n == 1)
+                return res;
+            
+            res++;
+
+            if (n % 2 == 0)
+                return IntegerReplacementUtil (n/2, res);
+            else
+                return Math.Min (IntegerReplacementUtil (n + 1, res), IntegerReplacementUtil (n - 1, res));           
         }
 
 

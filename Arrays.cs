@@ -7,13 +7,59 @@ namespace ConsoleApplication
     {  
         public Arrays ()
         {
-            int[] arr = new int[] {2,3,1,2,4,3};
+            int[] arr = new int[] {-2,0,1,1,2};
             int[] arr1 = new int[] {2,2};
 
-            Console.WriteLine (MinSubArray (7, arr));
+            Console.WriteLine (Sum3 (arr));
         }
 
-        // https://leetcode.com/problems/minimum-size-subarray-sum/
+
+        
+
+        // TODO. Wrong solution!
+        // https://leetcode.com/problems/3sum/
+        static IList<IList<int>> Sum3 (int[] nums)
+        {
+            Array.Sort (nums);
+            int sum = 0;
+            int s = 0;
+            IList<IList<int>> res = new List<IList<int>> ();
+            Dictionary<string, List<int>> hash = new Dictionary<string, List<int>> ();
+
+            for (int i = 0; i < nums.Length - 2; i++)
+            {
+                int startIndex = i + 1;
+                int endIndex = nums.Length - 1;
+
+                while (endIndex != startIndex)
+                {
+                    sum = nums[i] + nums[endIndex] + nums[startIndex];
+                   
+                    if (sum > s)
+                        endIndex--;
+                    else if (sum < s)
+                        startIndex++;
+                    else
+                    {
+                        var list = new List<int> {nums[i], nums[endIndex], nums[startIndex]};
+                        list.Sort ();
+                        string key = "";
+                        foreach (var item in list)
+                            key += item;
+
+                        if (!hash.ContainsKey (key))
+                            hash.Add (key, list);
+
+                        endIndex = startIndex;
+                    }                       
+                }
+            }
+
+            foreach (var item in hash)
+                res.Add (item.Value);
+
+            return res;          
+        }
 
         // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
         static int FindMin(int[] nums) 
@@ -102,33 +148,6 @@ namespace ConsoleApplication
                 return 0;
 
             return min;
-        }
-
-        // https://leetcode.com/problems/minimum-size-subarray-sum/
-        static int MinSubArrayLen (int s, int[] nums) 
-        {
-            int min = Int32.MaxValue;
-            int total = 0;
-
-            for (int i = 0; i < nums.Length; i++)
-            {
-                total += nums[i];
-            }
-
-            if (total < s)
-                return 0;
-
-            int p1 = 0;
-            int p2 = nums.Length - 1;
-
-            while (total >= s)
-            {
-                min = Math.Min (min, p2 - p1 + 1);
-                total -= nums [p1++];
-                Console.WriteLine (total + " > " + s);
-            }  
-
-            return min;  
         }
 
         // https://leetcode.com/problems/intersection-of-two-arrays/

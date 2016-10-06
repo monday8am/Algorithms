@@ -8,10 +8,35 @@ namespace ConsoleApplication
     {
         public Strings ()
         {
-            int[] arr = new int[] {7};
-            Console.WriteLine (LetterCombinations ("24"));
+            string[] arr = new string[] {"a","b"};
+            Console.WriteLine (LongestCommonPrefix (arr));
         }
 
+        // https://leetcode.com/problems/longest-common-prefix/
+        static string LongestCommonPrefix(string[] strs) 
+        {
+            string s = strs[0];
+
+            for (int j = 0; j < s.Length; j++)
+            {
+                for (int i = 1; i < strs.Length; i++)
+                {
+                    string str = strs[i];
+
+                    if (j == str.Length)
+                    {
+                        return str;
+                    }
+
+                    if (s.Substring (j, 1) != strs[i].Substring (j, 1))
+                    {
+                        return j > 1 ? s.Substring (j - 1, 1) : "";
+                    }
+                }               
+            }
+
+            return s;
+        }
 
         // https://leetcode.com/problems/letter-combinations-of-a-phone-number/
         static IList<string> LetterCombinations(string digits) 

@@ -32,8 +32,9 @@ namespace ConsoleApplication
             //var sudoko = new SudokuProblem ();
             //sudoko.SolveSudoku (cBoard);                                                      
               
-            /*  
-            var arr = GenerateParenthesis (3); 
+              
+            var arr = Subsets (new int[] {1,2,3});
+
             foreach (var item in arr)
             {
                 foreach (var item1 in item)
@@ -42,33 +43,77 @@ namespace ConsoleApplication
                 }
                 Console.WriteLine ("");
             }
-            */         
+                     
+        }
+
+        // https://leetcode.com/problems/subsets/
+        static IList<IList<int>> Subsets (int[] nums) 
+        {
+            IList<IList<int>> res = new List<IList<int>> ();
+            SubsetsUtils (nums, new List<int> (), 0, res);    
+            return res;
+        }   
+
+         static void SubsetsUtils (int[] nums, List<int> tmpList, int start, IList<IList<int>> res)
+        {
+            res.Add (new List<int> (tmpList));
+
+            for (int i = start; i < nums.Length; i++)
+            {
+                tmpList.Add (nums[i]);
+                SubsetsUtils (nums, tmpList, i + 1, res);
+                tmpList.Remove (nums[i]);                
+            }
+        }       
+
+        // https://leetcode.com/problems/combinations/
+        static IList<IList<int>> CombineNums (int n, int k) 
+        {
+            IList<IList<int>> res = new List<IList<int>> ();
+            CombineNumsUtil (new List<int> (), 1, n, k, res);    
+            return res;
+        }   
+
+        static void CombineNumsUtil (List<int> tmpList, int start, int n, int k, IList<IList<int>> res)
+        {
+            if (tmpList.Count >= k)
+            {
+                res.Add (new List<int> (tmpList));
+                return;
+            }
+
+            for (int i = start; i <= n; i++)
+            {
+                tmpList.Add (i);
+                CombineNumsUtil (tmpList, i + 1, n, k, res);
+                tmpList.Remove (i);                
+            }
         }
 
         // https://leetcode.com/problems/generate-parentheses/
-        public IList<string> GenerateParenthesis(int n) 
+        static IList<string> GenerateParenthesis(int n) 
         {
             List<string> l = new List<string> ();
-            GenerateParenthesisUtil (2 * n, "");
+            GenerateParenthesisUtil (2 * n, 0, 0, "", l);
             return l;
         }
 
-        public string GenerateParenthesisUtil (int n, string tmp) 
+        static void GenerateParenthesisUtil (int n, int open, int closed, string tmp, List<string> res)
         {
-            if (n == 0)
+            if (tmp.Length == n)
             {
-                return "";
-            }
+                res.Add (tmp);
+                return;
+            }    
 
-            if (tmp.Length == 0)
-                return GenerateParenthesisUtil (n - 1, tmp + "("); 
-            else if (n == 1)
-                return GenerateParenthesisUtil (n - 1, tmp + ")");            
-            else 
-            {
-                return GenerateParenthesisUtil (n - 1, tmp + ")") + GenerateParenthesisUtil (n - 1, tmp + "("); 
-            }
-        }        
+            if (open < n/2)
+                GenerateParenthesisUtil (n, open + 1, closed, tmp + "(", res);
+
+            if (closed < n/2 && open > closed)
+                GenerateParenthesisUtil (n, open, closed + 1, tmp + ")", res);
+        }
+
+        
 
         // https://leetcode.com/problems/permutations/
         static IList<IList<int>> ArrayPermutations (int[] nums)

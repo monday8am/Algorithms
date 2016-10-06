@@ -9,10 +9,10 @@ namespace ConsoleApplication
         {
             var root = new TreeNode (1);
             root.left = new TreeNode (2);
-            root.right = new TreeNode (2);
-            root.left.left = new TreeNode (5);
-            root.left.right = new TreeNode (4);
-            root.right.left = new TreeNode (4);
+            root.right = new TreeNode (3);
+            root.left.left = new TreeNode (4);
+            root.left.right = new TreeNode (5);
+            root.right.left = new TreeNode (6);
                         
             /*
             var root = new TreeNode (5);
@@ -27,8 +27,48 @@ namespace ConsoleApplication
             InsertNode (root, new TreeNode (1)); 
             */                                   
 
-            Console.WriteLine (SumTreeNumbers (root));       
+            PrintBinaryTree ("", root);
+            Console.WriteLine (InvertTree (root));     
+            PrintBinaryTree ("", root);              
         }
+
+        // https://leetcode.com/problems/invert-binary-tree/
+        static TreeNode InvertTree(TreeNode root) 
+        {
+            InvertTreeUtil (root);
+            return root;
+        }   
+
+        static void InvertTreeUtil (TreeNode root)
+        {
+            if (root == null)
+                return;
+                
+            if (root.left == null && root.right == null)
+                return;
+
+            if (root.left == null && root.right != null)
+            {
+                root.left = root.right;
+                root.right = null;
+                InvertTree (root.left);
+            }    
+
+            if (root.left != null && root.right == null)
+            {
+                root.right = root.left;
+                root.left = null;                
+                InvertTreeUtil (root.right);
+            }
+
+            TreeNode tmp = root.left;
+            root.left = root.right;
+            root.right = tmp;
+
+            InvertTreeUtil (root.left);
+            InvertTreeUtil (root.right);            
+        }
+
 
         // https://leetcode.com/problems/sum-root-to-leaf-numbers/
         static int SumTreeNumbers(TreeNode root) 
@@ -644,7 +684,6 @@ namespace ConsoleApplication
             return Math.Min (FindMinimunDepth (root.right), FindMinimunDepth(root.left)) + 1;                 
         }
     
-
         static List<List<int>> LevelOrder (TreeNode root)
         {
             List<List<int>> al = new List<List<int>>();
@@ -680,6 +719,27 @@ namespace ConsoleApplication
 
             return al;
         } 
+
+        public static void PrintBinaryTree (string indent, TreeNode root)
+        {
+            Console.Write(indent);
+            Console.WriteLine(root.val);
+
+            if (root.left == null && root.right == null)
+            {
+                return;
+            }
+
+            if (root.left != null)    
+            {        
+                PrintBinaryTree (indent + "/ ", root.left);                        
+            }
+            
+            if (root.right != null)
+            {
+                PrintBinaryTree (indent + "\\ ", root.right);                                        
+            }
+        }
 
         public class TreeNode 
         {

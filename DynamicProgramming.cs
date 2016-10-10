@@ -8,9 +8,29 @@ namespace ConsoleApplication
      
         public DynamicProgramming ()
         {
-            var arr = new int[] {1, -2, 0, 9, -1, -2};
+            var arr = new int[] {1, 5, 2, -2};
             //Console.WriteLine (IsInterleaveString( "aabcc","dbbca", "aadbbcbcac"));
-            Console.WriteLine (NumberSolitaire (arr));
+            Console.WriteLine (MinAbsSum (arr));
+        }
+
+        // https://codility.com/programmers/lessons/17-dynamic_programming/min_abs_sum/
+        static int MinAbsSum (int[] A)
+        {
+            int len = A.Length;
+            int[] dp = new int[len + 1];
+            int min = 0;
+
+            for (int i = 0; i < A.Length; i++)
+            {
+                min += Math.Abs (A[i]);
+            }
+
+            for (int i = 0; i < A.Length; i++)
+            {
+                min = Math.Min (Math.Abs (min - A[i]), Math.Abs (min + A[i]));
+            }
+
+            return min;
         }
 
         // https://codility.com/programmers/task/number_solitaire/

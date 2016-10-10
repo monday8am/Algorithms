@@ -7,14 +7,38 @@ namespace ConsoleApplication
     {  
         public Arrays ()
         {
-            int[] arr = new int[] {-2,0,1,1,2};
+            int[] arr = new int[] {2,1,3,1,1,2};
             int[] arr1 = new int[] {2,2};
 
-            Console.WriteLine (Sum3 (arr));
+            Console.WriteLine (SubArrayWithSum (arr, 5));
         }
 
 
-        
+        // http://blog.gainlo.co/index.php/2016/06/01/subarray-with-given-sum/
+        static List<int> SubArrayWithSum (int[] nums, int s)
+        {
+            List<int> res = new List<int> ();
+            int sum = 0;
+            int p2 = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum += nums[i];
+                while (sum >= s && p2 < nums.Length)
+                {
+                    if (sum == s)
+                    {
+                        Console.WriteLine ("do something!");
+                        return res;
+                    }
+
+                    sum -= nums[p2];
+                    p2 ++;
+                }
+            }
+
+            return res;
+        }
 
         // TODO. Wrong solution!
         // https://leetcode.com/problems/3sum/

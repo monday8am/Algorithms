@@ -7,8 +7,62 @@ namespace ConsoleApplication
     {
         public MathProblems ()
         {
-           Console.WriteLine (ReverseInteger (-2147483648));           
+           Console.WriteLine (ChocolatesByNumbers (10, 4));           
         }
+
+        // https://codility.com/programmers/lessons/12-euclidean_algorithm/chocolates_by_numbers/
+        static int ChocolatesByNumbers (int N, int M) 
+        {
+            // write your code in Java SE 8
+            return N / (ChocolatesByNumbersUtil (M, N));
+        }
+
+        static int ChocolatesByNumbersUtil (int a, int b)
+        {
+            if (a % b == 0)
+                return b;
+            else
+                return ChocolatesByNumbersUtil (b, a % b);
+        }        
+
+        // https://leetcode.com/problems/divide-two-integers/
+        // http://www.programcreek.com/2014/05/leetcode-divide-two-integers-java/
+        static int DivideIntegers (int dividend, int divisor) 
+        {
+            //handle special cases
+            if (divisor == 0) 
+                return Int32.MaxValue;
+            
+            if (divisor == -1 && dividend == Int32.MinValue)
+                return Int32.MaxValue;
+
+            //get positive values
+            long pDividend = Math.Abs((long)dividend);
+            long pDivisor = Math.Abs((long)divisor);   
+
+            int res = 0;
+
+            while (pDividend >= pDivisor)
+            {
+                // Calculate the number of left shifts.
+                int numShift = 0;
+                while (pDividend >= (pDivisor << numShift))
+                {
+                    numShift++;
+                }
+
+                //dividend minus the largest shifted divisor.
+                res += 1 << (numShift - 1);
+                pDividend -= (pDivisor << (numShift-1));
+            } 
+
+            // handle result sign.
+            if ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0))
+                return res;
+            else
+                return -res;
+        }
+
 
         // https://leetcode.com/problems/reverse-integer/
         static int ReverseInteger (int n)

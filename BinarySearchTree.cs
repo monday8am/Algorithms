@@ -32,6 +32,8 @@ namespace ConsoleApplication
             PrintBinaryTree ("", root);              
         }
 
+  
+
         // https://leetcode.com/problems/invert-binary-tree/
         static TreeNode InvertTree(TreeNode root) 
         {

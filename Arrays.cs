@@ -7,10 +7,79 @@ namespace ConsoleApplication
     {  
         public Arrays ()
         {
-            int[] arr = new int[] {2,1,3,1,1,2};
+            int[] arr = new int[] {1, 2 ,2 ,1};
             int[] arr1 = new int[] {2,2};
 
-            Console.WriteLine (SubArrayWithSum (arr, 5));
+            Console.WriteLine (IntersectArray (arr, arr1));
+        }
+
+        // https://leetcode.com/problems/intersection-of-two-arrays-ii/
+        static int[] IntersectArray(int[] nums1, int[] nums2) 
+        {
+            List<int> res = new List<int> ();
+            Dictionary<int, int> hash = new Dictionary<int, int> ();
+
+            for (int i = 0; i < nums1.Length; i++)
+            {
+                if (!hash.ContainsKey (nums1[i]))
+                    hash.Add (nums1[i], 1);
+                else
+                    hash[nums1[i]] ++;
+            }
+
+            for (int i = 0; i < nums2.Length; i++)
+            {
+                int num = nums2[i];
+                if (hash.ContainsKey (num))
+                {
+                    if (hash[num] > 1)
+                        hash[num] --;
+                    else
+                        hash.Remove (num);
+
+                    res.Add (num);
+                }
+            }
+
+            return res.ToArray ();
+        }
+
+        // https://leetcode.com/problems/3sum-closest/
+        static int ThreeSumClosest (int[] nums, int target) 
+        {
+            Array.Sort (nums);
+            long diff = Int32.MaxValue;
+            long _target = Convert.ToInt64 (target);
+            long res = 0;
+
+            for (int i = 0; i < nums.Length - 2; i++)
+            {
+                int p1 = i + 1;
+                int p2 = nums.Length - 1;
+                long sum = 0;           
+
+                while (p1 != p2)
+                {
+                    sum = nums[i] + nums[p1] + nums[p2];
+                   
+                    if (sum > _target)
+                        p2 --;
+                    else if (sum < _target)
+                        p1 ++;
+                    else
+                    {
+                        p2 = p1;
+                    } 
+
+                    if (Math.Abs (_target - sum) < diff)
+                    {
+                        diff = Math.Abs (_target - sum);
+                        res = sum;
+                    }
+                }
+            }  
+
+            return Convert.ToInt32 (res);
         }
 
 

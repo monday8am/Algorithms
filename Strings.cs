@@ -9,7 +9,36 @@ namespace ConsoleApplication
         public Strings ()
         {
             string[] arr = new string[] {"a","b"};
-            Console.WriteLine (LongestCommonPrefix (arr));
+            Console.WriteLine (LengthOfLongestSubstring ("pwwkew"));
+        }
+
+        // https://leetcode.com/problems/longest-substring-without-repeating-characters/
+        static int LengthOfLongestSubstring(string s) 
+        {
+            HashSet<string> hash = new HashSet<string> ();
+            int res = 0;
+            int p1 = 0;
+            int p2 = 0;
+
+            while (p1 < s.Length && p2 < s.Length)
+            {
+                string c = s.Substring (p1, 1);
+
+                if (hash.Contains (c))
+                {
+                    hash.Remove (s.Substring (p2, 1));
+                    p2 ++;    
+                }
+                else
+                {
+                    hash.Add (c);
+                    p1 ++;
+                }
+                
+                res = Math.Max (res, hash.Count);
+            }
+
+            return res;
         }
 
         // https://leetcode.com/problems/longest-common-prefix/

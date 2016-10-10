@@ -29,22 +29,52 @@ namespace ConsoleApplication
                             {'.', '.', '.', '.', '.', '.', '.', '7', '4'},
                             {'.', '.', '5', '2', '.', '6', '3', '.', '.'}};  
 
-            //var sudoko = new SudokuProblem ();
-            //sudoko.SolveSudoku (cBoard);                                                      
-              
-              
-            var arr = Subsets (new int[] {1,2,3});
-
-            foreach (var item in arr)
-            {
-                foreach (var item1 in item)
-                {
-                    Console.Write (item1);
-                }
-                Console.WriteLine ("");
-            }
-                     
+            Console.WriteLine (GetPermutation (4, 3));                
         }
+
+
+        // no explanation :(
+        // http://www.programcreek.com/2013/02/leetcode-permutation-sequence-java/
+        // https://leetcode.com/problems/permutation-sequence/
+        static string GetPermutation (int n, int k) 
+        {
+            // initialize all numbers
+            List<int> numberList = new List<int>();
+            for (int i = 1; i <= n; i++) 
+            {
+                numberList.Add (i);
+            }
+
+            // change k to be index
+            k--;
+
+            // calculate factorial of n.
+            int mod = 1;
+            for (int i = 1; i <= n; i++) {
+                mod = mod * i;
+            }
+
+            string res = "";
+
+            for (int i = 0; i < n; i++)
+            {
+                mod = mod / (n - i);
+
+                // find the right number(curIndex) of
+                int currIndex = k / mod;
+                // update k
+                k = k % mod;
+
+                // get number according to curIndex
+                res += numberList [currIndex];
+                // remove from list
+                numberList.RemoveAt (currIndex);                
+
+            }
+
+            return res;
+        }
+
 
         // https://leetcode.com/problems/subsets/
         static IList<IList<int>> Subsets (int[] nums) 

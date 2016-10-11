@@ -12,7 +12,7 @@ namespace ConsoleApplication
             root.right = new TreeNode (3);
             root.left.left = new TreeNode (4);
             root.left.right = new TreeNode (5);
-            root.right.left = new TreeNode (6);
+            //root.right.left = new TreeNode (6);
                         
             /*
             var root = new TreeNode (5);
@@ -28,11 +28,36 @@ namespace ConsoleApplication
             */                                   
 
             PrintBinaryTree ("", root);
-            Console.WriteLine (InvertTree (root));     
-            PrintBinaryTree ("", root);              
+            Console.WriteLine (SumOfLeftLeaves (root));     
+            //PrintBinaryTree ("", root);   
         }
 
-  
+        // https://leetcode.com/problems/sum-of-left-leaves/
+        static int SumOfLeftLeaves(TreeNode root) 
+        {
+            return SumOfLeftLeavesUtil (root);
+        }
+
+        static int SumOfLeftLeavesUtil (TreeNode root)
+        {
+            if (root == null)
+                return 0;
+
+            if (root.left == null && root.right == null)
+                return 0;
+
+            int sum = 0;    
+
+            // Only leave is needed
+            if (root.left != null && 
+                root.left.left == null && 
+                root.left.right == null)
+            {
+                sum = root.left.val;
+            }
+
+            return sum + SumOfLeftLeavesUtil (root.left) + SumOfLeftLeavesUtil (root.right);
+        }
 
         // https://leetcode.com/problems/invert-binary-tree/
         static TreeNode InvertTree(TreeNode root) 

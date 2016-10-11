@@ -9,10 +9,7 @@ namespace ConsoleApplication
         {
             int[] nums1 = new int[] {1,2,3};
             int[] nums2 = new int[] {3,4,6};
-            
-            Console.WriteLine (FindSmallestSum (nums1, nums2, 6));
         }
-
 
         // TODO Not finished!
         static int SuperUglyNumber (int n, int[] primes)

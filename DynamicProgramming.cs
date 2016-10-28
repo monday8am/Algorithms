@@ -10,7 +10,29 @@ namespace ConsoleApplication
         {
             var arr = new int[] {1, 5, 2, -2};
             //Console.WriteLine (IsInterleaveString( "aabcc","dbbca", "aadbbcbcac"));
-            Console.WriteLine (MinAbsSum (arr));
+            Console.WriteLine (DistinctSubsequences ("rabbbit","rabbit"));
+        }
+
+        // https://leetcode.com/problems/distinct-subsequences/
+       static int DistinctSubsequences (string s, string t)
+        {
+            int[,] dp = new int[s.Length + 1, t.Length + 1];
+        
+            for (int i = 0; i < s.Length; i++)
+                dp[i,0] = 1;
+        
+            for (int i = 1; i <= s.Length; i++) {
+                for (int j = 1; j <= t.Length; j++) {
+                    if (s.Substring (i - 1, 1) == t.Substring(j - 1, 1)) 
+                    {
+                        dp[i,j] += dp[i - 1,j] + dp[i - 1,j - 1];
+                    } else {
+                        dp[i,j] += dp[i - 1,j];
+                    }
+                }
+            }
+
+            return dp[s.Length, t.Length];     
         }
 
         // https://codility.com/programmers/lessons/17-dynamic_programming/min_abs_sum/

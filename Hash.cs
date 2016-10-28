@@ -9,7 +9,36 @@ namespace ConsoleApplication
         {
             var s = "rat";
             var t = "car";
-            Console.WriteLine (ValidParentesis ("()[]{}"));
+            Console.WriteLine (GroupAnagrams (new string[] {"eat", "tea", "tan", "ate", "nat", "bat"}));
+        }
+
+
+        // TODO: time limit problems.
+        // http://www.programcreek.com/2014/04/leetcode-anagrams-java/
+        // https://leetcode.com/problems/anagrams/
+        static IList<IList<string>> GroupAnagrams (string[] strs)
+        {
+            List<IList<string>> res = new List<IList<string>> ();
+            Dictionary<string, List<string>> hash = new Dictionary<string, List<string>> ();
+
+            for (int i = 0; i < strs.Length; i++)
+            {
+                char[] arr = new char[126];
+                for (int j = 0; j < strs[i].Length; j++)
+                    arr[strs[i][j] - 'a']++;
+
+                string ns = new String (arr);
+
+                if (hash.ContainsKey (ns))
+                    hash[ns].Add (strs[i]);
+                else
+                    hash.Add (ns, new List<string> {strs[i]});    
+            }
+
+            foreach (var item in hash)
+                res.Add (item.Value);
+
+            return res;
         }
 
         // https://leetcode.com/problems/valid-anagram/

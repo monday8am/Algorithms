@@ -9,9 +9,108 @@ namespace ConsoleApplication
         public Strings ()
         {
             string[] arr = new string[] {"a","b"};
-            Console.WriteLine (LengthOfLongestSubstring ("pwwkew"));
+            Console.WriteLine (CountAndSay (7));
         }
 
+        static string CountAndSay(int n)
+        {
+            string res = "1";
+
+            for (int i = 1; i < n; i++)
+            {
+                res = CountAndSayUtil (res);
+            }
+
+            return res;
+        }
+
+        static string CountAndSayUtil(string s) 
+        {
+            string res = "";
+            int counter  = 1;
+            string previous = s.Substring (0, 1);
+
+            for (int i = 1; i < s.Length; i++)
+            {
+                string c = s.Substring (i, 1);
+                if (c != previous)
+                {
+                    res += counter;
+                    res += previous;
+                    counter = 1;
+                    previous = c;
+                }
+                else
+                {
+                    counter ++;
+                }
+            }
+
+            res += counter;
+            res += previous;
+
+            return res;
+        }
+
+
+        // https://leetcode.com/problems/reverse-words-in-a-string/
+        static string ReverseWords(string s) 
+        {
+            string str = "";
+            Stack<string> stack = new Stack<string> ();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                string c = s.Substring(i, 1);
+                if (c != " ")
+                {
+                    str += c;
+                }
+                else
+                {
+                    if (str.Length > 0)
+                    {
+                        stack.Push (str);
+                        str = "";
+                    }
+                }                
+            }
+
+            if (str != "")
+                stack.Push (str);
+
+            string res = "";
+            while (stack.Count > 0)
+            {
+                res += stack.Pop () + " ";
+            }
+
+            return res.Length > 0 ? res.Substring (0, res.Length - 1) : "";
+        }
+
+        // https://leetcode.com/problems/length-of-last-word/
+        static int LengthOfLastWord(string s)
+        {
+            int res = 0;
+            bool start = false;
+
+            for (int i = s.Length - 1; i >= 0; i--)
+            {
+                if (s.Substring(i, 1) != " ")
+                {
+                    res++;
+                    start = true;
+                }
+                else
+                {
+                    if (start)
+                        return res;
+                }
+            }
+
+            return res;
+        }
+        
         // https://leetcode.com/problems/longest-substring-without-repeating-characters/
         static int LengthOfLongestSubstring(string s) 
         {

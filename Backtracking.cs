@@ -29,7 +29,58 @@ namespace ConsoleApplication
                             {'.', '.', '.', '.', '.', '.', '.', '7', '4'},
                             {'.', '.', '5', '2', '.', '6', '3', '.', '.'}};  
 
-            Console.WriteLine (GetPermutation (4, 3));                
+            Console.WriteLine (ReadBinaryWatch (3));                
+        }
+
+        // https://leetcode.com/problems/binary-watch/
+        static IList<string> ReadBinaryWatch (int num)
+        {
+            var hash = new HashSet<string> ();
+            int[] arr = new int[10];
+            for (int i = 0; i < num; i++)
+            {
+                arr[i] = 1;
+            }
+            ReadBinaryWatchUtil (arr, hash);
+            
+            var res = new string[hash.Count];
+            hash.CopyTo (res);
+            return new List<string> (res);
+        }
+
+        static void ReadBinaryWatchUtil (int[] arr, HashSet<string> hash)
+        {
+            // build time
+            var hour = "";
+            for (int i = 0; i < 4; i++)
+                hour += arr[i];
+
+            var h = Convert.ToInt32(hour, 2);
+
+            var minutes = "";
+            for (int i = 4; i < 10; i++)
+                minutes += arr[i];
+            
+            var m = Convert.ToInt32(minutes, 2);
+            var s = h + ":" + (m < 10 ? "0" + m : m.ToString ());
+
+            if (!hash.Contains (s))
+            {
+                hash.Add (s);
+            }
+
+            for (int i = 1; i < 10; i++)
+            {
+                if (arr[i - 1] == 1 && arr[i] == 0)
+                {
+                    arr[i - 1] = 0;
+                    arr[i] = 1;
+                    ReadBinaryWatchUtil (arr, hash);
+                    // backtracking
+                    arr[i - 1] = 1;
+                    arr[i] = 0;
+                }
+            }
         }
 
 

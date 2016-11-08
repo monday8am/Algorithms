@@ -10,7 +10,53 @@ namespace ConsoleApplication
             int[] arr = new int[] { 1, 2, 2 };
             int[] arr1 = new int[] { 2, 2 };
 
-            FourSum(arr, 10);
+            Console.WriteLine (FrequencySort("tree"));
+        }
+
+        static int RemoveDuplicates(int[] nums) 
+        {
+            return 0;
+        }
+
+        // https://leetcode.com/problems/sort-characters-by-frequency/
+        static string FrequencySort(string s) 
+        {
+            Dictionary<string, int> hash = new Dictionary<string, int> ();
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                var c = s.Substring (i, 1);
+                if (hash.ContainsKey (c))
+                {
+                    hash[c] ++;
+                }
+                else
+                {
+                    hash.Add (c, 1);
+                }
+            }
+
+            string res = "";
+            while (hash.Count > 0)
+            {
+                int max = Int32.MinValue;
+                string c = "";
+                foreach (var item in hash)
+                {
+                    if (item.Value > max)
+                    {
+                        max = item.Value;
+                        c = item.Key;
+                    }
+                }
+
+                for (int i = 0; i < max; i++)
+                    res += c;
+
+                hash.Remove (c);    
+            }
+
+            return res;
         }
 
         // https://leetcode.com/problems/4sum/

@@ -29,9 +29,43 @@ namespace ConsoleApplication
                             {'.', '.', '.', '.', '.', '.', '.', '7', '4'},
                             {'.', '.', '5', '2', '.', '6', '3', '.', '.'}};  
 
-            Console.WriteLine (ReadBinaryWatch (3));                
+            Console.WriteLine (CombinationSum2 (new int[7]{10, 1, 2, 7, 6, 1, 5}, 8));                
         }
 
+        // https://leetcode.com/problems/combination-sum-ii/
+        static IList<IList<int>> CombinationSum2(int[] candidates, int target) 
+        {
+            Array.Sort (candidates);
+            List<IList<int>> res = new List<IList<int>> ();
+            CombinationSum2Util (candidates, new List<int>(), target, 0, res);
+            return res;
+        }
+
+        static void CombinationSum2Util (int[] candidates, List<int> list, int target, int start, List<IList<int>> res)
+        {
+            if (target == 0)
+            {
+                res.Add (new List<int>(list));
+            }
+
+            if (target <= 0)
+                return;
+
+            int prev = -1;    
+            for (int i = start; i < candidates.Length; i++)
+            {
+                if (candidates[i] != prev) // each time start from different element
+                {
+                    list.Add (candidates[i]);
+                    // and use next element only
+                    CombinationSum2Util (candidates, list, target - candidates[i], i + 1, res);
+                    list.Remove (candidates[i]);   
+                    prev = candidates[i];         
+                }
+            }    
+        }
+
+        // It works, but time limit exceed!
         // https://leetcode.com/problems/binary-watch/
         static IList<string> ReadBinaryWatch (int num)
         {

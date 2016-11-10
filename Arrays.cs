@@ -7,15 +7,51 @@ namespace ConsoleApplication
     {
         public Arrays()
         {
-            int[] arr = new int[] { 1, 2, 2 };
+            int[] arr = new int[] { 1,2, 2, 2, 3 };
             int[] arr1 = new int[] { 2, 2 };
 
-            Console.WriteLine (FrequencySort("tree"));
+            Console.WriteLine (RemoveDuplicates2(arr));
         }
 
-        static int RemoveDuplicates(int[] nums) 
+        // Slow solution :/
+        // https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
+        static int RemoveDuplicates2 (int[] nums) 
         {
-            return 0;
+            int len = nums.Length;
+            int p1 = 0;
+            int p2 = 1;
+            bool countDouble = true;
+
+            while (p2 < len)
+            {
+                if (nums[p2] == nums[p1])
+                {
+                    if (countDouble)
+                    {
+                        p1++;
+                        p2++;
+                        countDouble = false;
+                    }
+                    else
+                    {
+                        for (int j = p2; j < len - 1; j++)
+                        {
+                            nums[j] = nums[j + 1];
+                        }
+
+                        len --;
+                    }
+                }
+                else
+                {
+                    p1++;
+                    p2++;
+                    countDouble = true;
+                }
+
+            }
+
+            return len;
         }
 
         // https://leetcode.com/problems/sort-characters-by-frequency/
